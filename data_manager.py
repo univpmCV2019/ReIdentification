@@ -465,22 +465,22 @@ class Dataset(object):
 			num_imgs_per_tracklet = []
 			pid=1
 			lista_file= glob.glob(dirname+'/*')
-			ultimo_file= max(list_of_files, key=os.path.getctime)
+			ultimo_file= max(lista_file, key=os.path.getctime)
 			for filename in lista_file:
-				if(tracklets=='')
+				if not tracklets:
 					clip.append((filename,pid))
-				else
+				else:
 					stringa='Image-'+pid+'-'
-					if(stringa in filename)
+					if(stringa in filename):
 						clip.append((filename,pid))
-						if(filename==ultimo_file)
+						if(filename==ultimo_file):
 							tracklets.append(clip)
-							pid++
+							pid+=1
 							num_imgs_per_tracklet.append(len(clip))
 							del clip[:]
-					else
+					else:
 						tracklets.append(clip)
-						pid++
+						pid+=1
 						num_imgs_per_tracklet.append(len(clip))
 						del clip[:]
 						clip.append((filename,pid))
