@@ -419,6 +419,82 @@ class PRID(object):
 
         return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 
+class Dataset(object):
+	#deve restituire tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+	#tracklets: lista di clip 
+	#num_tracklets: num di clip 
+	#num_pids: numero di persone(?)
+	#num_imgs_per_tracklet: numero di immagini nel tracklet 
+	root = './data'
+	train_dir = osp.join(root, 'train')
+	test_dir = osp.join(root, 'test')
+	def _init_(self,min_seq_len=0):
+			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
+			train, num_train_tracklets, num_train_pids, num_imgs_train =self._process_data(train_dir)
+			test, num_test_tracklets, num_test_pids, num_imgs_test =self.process_data(test_test)
+			num_imgs_per_tracklet = num_imgs_train + num_imgs_test
+			min_num = np.min(num_imgs_per_tracklet)
+			max_num = np.max(num_imgs_per_tracklet)
+			avg_num = np.mean(num_imgs_per_tracklet)
+		
+			num_total_pids = num_train_pids + num_test_pids
+			num_total_tracklets = num_train_tracklets + num_test_tracklets
+        
+			print("=> Dataset caricato")
+			print("Dataset statistics:")
+			print("  ------------------------------")
+			print("  subset   | # ids | # tracklets")
+			print("  ------------------------------")
+			print("  train    | {:5d} | {:8d}".format(num_train_pids, num_train_tracklets))
+			print("  test    | {:5d} | {:8d}".format(num_test_pids, num_test_tracklets))
+			print("  ------------------------------")
+			print("  total    | {:5d} | {:8d}".format(num_total_pids, num_total_tracklets))
+			print("  number of images per tracklet: {} ~ {}, average {:.1f}".format(min_num, max_num, avg_num))
+			print("  ------------------------------")
+
+			self.train = train
+			self.test = test
+
+			self.num_train_pids = num_train_pids
+			self.num_test_pids = num_test_pids
+			
+	def _process_data(self, dirname):
+			#separare tutti i file in clip in base al nome (?)
+			tracklets = []
+			clip= []
+			num_imgs_per_tracklet = []
+			pid=1
+			lista_file= glob.glob(dirname+'/*')
+			ultimo_file= max(list_of_files, key=os.path.getctime)
+			for filename in lista_file:
+				if(tracklets=='')
+					clip.append((filename,pid))
+				else
+					stringa='Image-'+pid+'-'
+					if(stringa in filename)
+						clip.append((filename,pid))
+						if(filename==ultimo_file)
+							tracklets.append(clip)
+							pid++
+							num_imgs_per_tracklet.append(len(clip))
+							del clip[:]
+					else
+						tracklets.append(clip)
+						pid++
+						num_imgs_per_tracklet.append(len(clip))
+						del clip[:]
+						clip.append((filename,pid))
+						
+						
+					
+        
+				
+
+			num_tracklets = len(tracklets)
+			num_pids = pid
+
+			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+		
 """Create dataset"""
 
 __factory = {
