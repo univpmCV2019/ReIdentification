@@ -465,66 +465,63 @@ class Dataset(object):
 			
 	
 	def _process_data(dirname,split):
-    	tracklets = []
-    	clip=[]
-    	num_imgs_per_tracklet = []
-    	pid_corrente=0
-    	lista_file= glob.glob(dirname+'/*') #prendo tutti i file
-    	if(dirname==test_dir): #se cartella è di test 
-        	#divido i file in due set 
-        	split_1 = int(0.8 * len(lista_file))
-        	file_query=lista_file[split_1:]
-        	file_gallery=lista_file[:split_1]
-        	if(split=='query'):
-            		for i in range(1,len(file_query)/2):
-                		#######
-                		stringa='Image-'+str(i)+'-'
-                		for frame in file_query:
-                    			if stringa in frame:
-                        			clip.append(frame)
-				if len(clip)!=0:
-                    			tracklets.append((clip[:],i)) 
-                    			pid_corrente+=1
-                    			num_imgs_per_tracklet.append((len(clip),i))
-                    			del clip[:]
+    		tracklets = []
+    		clip=[]
+    		num_imgs_per_tracklet = []
+    		pid_corrente=0
+    		lista_file= glob.glob(dirname+'/*') #prendo tutti i file
+    		if(dirname==test_dir): #se cartella è di test 
+        		#divido i file in due set 
+        		split_1 = int(0.8 * len(lista_file))
+        		file_query=lista_file[split_1:]
+        		file_gallery=lista_file[:split_1]
+        		if(split=='query'):
+            			for i in range(1,len(file_query)/2):
+                			#######
+                			stringa='Image-'+str(i)+'-'
+                			for frame in file_query:
+                    				if stringa in frame:
+                        				clip.append(frame)
+					if len(clip)!=0:
+                    				tracklets.append((clip[:],i)) 
+                    				pid_corrente+=1
+                    				num_imgs_per_tracklet.append((len(clip),i))
+                    				del clip[:]
 
-            		num_tracklets= len(tracklets)
-            		num_pids=pid_corrente
+            			num_tracklets= len(tracklets)
+            			num_pids=pid_corrente
                     
-            		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-        if(split=='gallery'):
-            
-            for i in range(1,len(file_gallery)/2): 
-                #######
-                stringa='Image-'+str(i)+'-'
-                for frame in file_gallery:
-                    if stringa in frame:
-                        clip.append(frame) #qui crea la lista di frame che compongono la clip
-                        
-
-                if len(clip)!=0:
-                    tracklets.append((clip[:],i)) 
-                    pid_corrente+=1
-                    num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
-                    del clip[:] #svuota clip 
+            			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+        		if(split=='gallery'):
+           			for i in range(1,len(file_gallery)/2): 
+                			#######
+                			stringa='Image-'+str(i)+'-'
+                			for frame in file_gallery:
+                    				if stringa in frame:
+                        				clip.append(frame) #qui crea la lista di frame che compongono la clip
+                        		if len(clip)!=0:
+                    				tracklets.append((clip[:],i)) 
+                    				pid_corrente+=1
+                    				num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
+                    				del clip[:] #svuota clip 
                 
-            num_tracklets= len(tracklets)
-            num_pids=pid_corrente
-        return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-    else:
-        for i in range(1,len(lista_file)/2):
+            			num_tracklets= len(tracklets)
+            			num_pids=pid_corrente
+        			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+    		else:
+        		for i in range(1,len(lista_file)/2):
             
-            #prendo tutti i frame di indice i
-            stringa='/Image-'+str(i)+'-*.jpg'
-            all_frames=glob.glob(dirname+stringa)
-            if len(all_frames)!=0:
-                #se vuoto non fare nulla, vuol dire non c'è nessun clip con nome Image-i-..jpg 
-                tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
-                pid_corrente+=1 #incremento il numero di pid
-                num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
-        num_tracklets= len(tracklets)
-        num_pids=pid_corrente
-        return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+            			#prendo tutti i frame di indice i
+            			stringa='/Image-'+str(i)+'-*.jpg'
+            			all_frames=glob.glob(dirname+stringa)
+            			if len(all_frames)!=0:
+                			#se vuoto non fare nulla, vuol dire non c'è nessun clip con nome Image-i-..jpg 
+                			tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
+                			pid_corrente+=1 #incremento il numero di pid
+                			num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
+        		num_tracklets= len(tracklets)
+        		num_pids=pid_corrente
+        		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 
 
 			
