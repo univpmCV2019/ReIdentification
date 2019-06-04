@@ -515,7 +515,7 @@ class Dataset(object):
             			stringa='/Image-'+str(i)+'-*.jpg'
             			all_frames=glob.glob(dirname+stringa)
             			if len(all_frames)!=0:
-                			#se vuoto non fare nulla, vuol dire non c'è nessun clip con nome Image-i-..jpg 
+                			#se vuoto non fare nulla, vuol dire non esiste nessun clip con nome Image-i-..jpg 
                 			tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
                 			pid_corrente+=1 #incremento il numero di pid
                 			num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
