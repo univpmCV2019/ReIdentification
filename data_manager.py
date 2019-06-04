@@ -426,8 +426,8 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'train')
-	test_dir = osp.join(root, 'test')
+	train_dir = osp.join(root, 'Train100')
+	test_dir = osp.join(root, 'Test100')
 	def _init_(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train =self._process_data(train_dir,'false')
@@ -465,36 +465,33 @@ class Dataset(object):
 			
 	
 	def _process_data(dirname,split):
-    tracklets = []
-    clip=[]
-    num_imgs_per_tracklet = []
-    pid_corrente=0
-    lista_file= glob.glob(dirname+'/*') #prendo tutti i file
-    if(dirname==test_dir): #se cartella è di test 
-        #divido i file in due set 
-        split_1 = int(0.8 * len(lista_file))
-        file_query=lista_file[split_1:]
-        file_gallery=lista_file[:split_1]
-        if(split=='query'):
-            for i in range(1,len(file_query)/2):
-                #######
-                stringa='Image-'+str(i)+'-'
-                for frame in file_query:
-                    if stringa in frame:
-                        clip.append(frame)
-                        
-                        
+    	tracklets = []
+    	clip=[]
+    	num_imgs_per_tracklet = []
+    	pid_corrente=0
+    	lista_file= glob.glob(dirname+'/*') #prendo tutti i file
+    	if(dirname==test_dir): #se cartella è di test 
+        	#divido i file in due set 
+        	split_1 = int(0.8 * len(lista_file))
+        	file_query=lista_file[split_1:]
+        	file_gallery=lista_file[:split_1]
+        	if(split=='query'):
+            		for i in range(1,len(file_query)/2):
+                		#######
+                		stringa='Image-'+str(i)+'-'
+                		for frame in file_query:
+                    			if stringa in frame:
+                        			clip.append(frame)
+				if len(clip)!=0:
+                    			tracklets.append((clip[:],i)) 
+                    			pid_corrente+=1
+                    			num_imgs_per_tracklet.append((len(clip),i))
+                    			del clip[:]
 
-                if len(clip)!=0:
-                    tracklets.append((clip[:],i)) 
-                    pid_corrente+=1
-                    num_imgs_per_tracklet.append((len(clip),i))
-                    del clip[:]
-
-            num_tracklets= len(tracklets)
-            num_pids=pid_corrente
+            		num_tracklets= len(tracklets)
+            		num_pids=pid_corrente
                     
-            return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+            		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
         if(split=='gallery'):
             
             for i in range(1,len(file_gallery)/2): 
