@@ -18,7 +18,6 @@ from utils import mkdir_if_missing, write_json, read_json
 class Mars(object):
     """
     MARS
-
     Reference:
     Zheng et al. MARS: A Video Benchmark for Large-Scale Person Re-identification. ECCV 2016.
     
@@ -26,7 +25,6 @@ class Mars(object):
     # identities: 1261
     # tracklets: 8298 (train) + 1980 (query) + 9330 (gallery)
     # cameras: 6
-
     Args:
         min_seq_len (int): tracklet with length shorter than this value will be discarded (default: 0).
     """
@@ -153,7 +151,6 @@ class Mars(object):
 class iLIDSVID(object):
     """
     iLIDS-VID
-
     Reference:
     Wang et al. Person Re-Identification by Video Ranking. ECCV 2014.
     
@@ -161,7 +158,6 @@ class iLIDSVID(object):
     # identities: 300
     # tracklets: 600
     # cameras: 2
-
     Args:
         split_id (int): indicates which split to use. There are totally 10 splits.
     """
@@ -321,7 +317,6 @@ class iLIDSVID(object):
 class PRID(object):
     """
     PRID
-
     Reference:
     Hirzer et al. Person Re-Identification by Descriptive and Discriminative Classification. SCIA 2011.
     
@@ -329,7 +324,6 @@ class PRID(object):
     # identities: 200
     # tracklets: 400
     # cameras: 2
-
     Args:
         split_id (int): indicates which split to use. There are totally 10 splits.
         min_seq_len (int): tracklet with length shorter than this value will be discarded (default: 0).
@@ -420,126 +414,126 @@ class PRID(object):
         return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 
 class Dataset(object):
-	#deve restituire tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-	#tracklets: lista di clip 
-	#num_tracklets: num di clip 
-	#num_pids: numero di persone(?)
-	#num_imgs_per_tracklet: numero di immagini nel tracklet 
-	root = './data'
-	train_dir = osp.join(root, 'Train100')
-	test_dir = osp.join(root, 'Test100')
-	def _init_(self,min_seq_len=0):
-			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
-			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(train_dir,'false')
-			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(test_dir,'query')
-			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(test_dir,'gallery')
-			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
-			min_num = np.min(num_imgs_per_tracklet)
-			max_num = np.max(num_imgs_per_tracklet)
-			avg_num = np.mean(num_imgs_per_tracklet)
-		
-			num_total_pids = num_train_pids + num_query_pids
-			num_total_tracklets = num_train_tracklets + num_query_tracklets + num_gallery_tracklets
+    #deve restituire tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+    #tracklets: lista di clip 
+    #num_tracklets: num di clip 
+    #num_pids: numero di persone(?)
+    #num_imgs_per_tracklet: numero di immagini nel tracklet 
+    root = './data'
+    train_dir = osp.join(root, 'Train100')
+    test_dir = osp.join(root, 'Test100')
+    def _init_(self,min_seq_len=0):
+            print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
+            train, num_train_tracklets, num_train_pids, num_imgs_train = \
+              self._process_data(train_dir,'false')
+            query, num_query_tracklets, num_query_pids, num_imgs_query = \
+              self._process_data(test_dir,'query')
+            gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
+              self._process_data(test_dir,'gallery')
+            num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
+            min_num = np.min(num_imgs_per_tracklet)
+            max_num = np.max(num_imgs_per_tracklet)
+            avg_num = np.mean(num_imgs_per_tracklet)
         
-			print("=> Dataset caricato")
-			print("Dataset statistics:")
-			print("  ------------------------------")
-			print("  subset   | # ids | # tracklets")
-			print("  ------------------------------")
-			print("  train    | {:5d} | {:8d}".format(num_train_pids, num_train_tracklets))
-			print("  query    | {:5d} | {:8d}".format(num_query_pids, num_query_tracklets))
-			print("  gallery  | {:5d} | {:8d}".format(num_gallery_pids, num_gallery_tracklets))
-			print("  ------------------------------")
-			print("  total    | {:5d} | {:8d}".format(num_total_pids, num_total_tracklets))
-			print("  number of images per tracklet: {} ~ {}, average {:.1f}".format(min_num, max_num, avg_num))
-			print("  ------------------------------")
+            num_total_pids = num_train_pids + num_query_pids
+            num_total_tracklets = num_train_tracklets + num_query_tracklets + num_gallery_tracklets
+        
+            print("=> Dataset caricato")
+            print("Dataset statistics:")
+            print("  ------------------------------")
+            print("  subset   | # ids | # tracklets")
+            print("  ------------------------------")
+            print("  train    | {:5d} | {:8d}".format(num_train_pids, num_train_tracklets))
+            print("  query    | {:5d} | {:8d}".format(num_query_pids, num_query_tracklets))
+            print("  gallery  | {:5d} | {:8d}".format(num_gallery_pids, num_gallery_tracklets))
+            print("  ------------------------------")
+            print("  total    | {:5d} | {:8d}".format(num_total_pids, num_total_tracklets))
+            print("  number of images per tracklet: {} ~ {}, average {:.1f}".format(min_num, max_num, avg_num))
+            print("  ------------------------------")
 
-			self.train = train
-			self.query = query
-			self.gallery = gallery
+            self.train = train
+            self.query = query
+            self.gallery = gallery
 
-			self.num_train_pids = num_train_pids
-			self.num_query_pids = num_query_pids
-			self.num_gallery_pids = num_gallery_pids
+            self.num_train_pids = num_train_pids
+            self.num_query_pids = num_query_pids
+            self.num_gallery_pids = num_gallery_pids
 
-			
-	
-	def _process_data(self,dirname,split):
-    		tracklets = []
-    		clip=[]
-    		num_imgs_per_tracklet = []
-    		pid_corrente=0
-    		lista_file= glob.glob(dirname+'/*') #prendo tutti i file
-    		if(dirname==test_dir): #se cartella di test 
-        		#divido i file in due set 
-        		split_1 = int(0.8 * len(lista_file))
-        		file_query=lista_file[split_1:]
-        		file_gallery=lista_file[:split_1]
-        		if(split=='query'):
-            			for i in range(1,len(file_query)/2):
-                			#######
-                			stringa='Image-'+str(i)+'-'
-                			for frame in file_query:
-                    				if stringa in frame:
-                        				clip.append(frame)
-					if len(clip)!=0:
-                    				tracklets.append((clip[:],i)) 
-                    				pid_corrente+=1
-                    				num_imgs_per_tracklet.append((len(clip),i))
-                    				del clip[:]
-
-            			num_tracklets= len(tracklets)
-            			num_pids=pid_corrente
-                    
-            			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-        		if(split=='gallery'):
-           			for i in range(1,len(file_gallery)/2): 
-                			#######
-                			stringa='Image-'+str(i)+'-'
-                			for frame in file_gallery:
-                    				if stringa in frame:
-                        				clip.append(frame) #qui crea la lista di frame che compongono la clip
-                        		if len(clip)!=0:
-                    				tracklets.append((clip[:],i)) 
-                    				pid_corrente+=1
-                    				num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
-                    				del clip[:] #svuota clip 
-                
-            			num_tracklets= len(tracklets)
-            			num_pids=pid_corrente
-        			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-    		else:
-        		for i in range(1,len(lista_file)/2):
             
-            			#prendo tutti i frame di indice i
-            			stringa='/Image-'+str(i)+'-*.jpg'
-            			all_frames=glob.glob(dirname+stringa)
-            			if len(all_frames)!=0:
-                			#se vuoto non fare nulla, vuol dire non esiste nessun clip con nome Image-i-..jpg 
-                			tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
-                			pid_corrente+=1 #incremento il numero di pid
-                			num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
-        		num_tracklets= len(tracklets)
-        		num_pids=pid_corrente
-        		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+    
+    def _process_data(self,dirname,split):
+            tracklets = []
+            clip=[]
+            num_imgs_per_tracklet = []
+            pid_corrente=0
+            lista_file= glob.glob(dirname+'/*') #prendo tutti i file
+            if(dirname==test_dir): #se cartella di test 
+                #divido i file in due set 
+                split_1 = int(0.8 * len(lista_file))
+                file_query=lista_file[split_1:]
+                file_gallery=lista_file[:split_1]
+                if(split=='query'):
+                        for i in range(1,len(file_query)/2):
+                            #######
+                            stringa='Image-'+str(i)+'-'
+                            for frame in file_query:
+                                    if stringa in frame:
+                                        clip.append(frame)
+                    if len(clip)!=0:
+                                    tracklets.append((clip[:],i)) 
+                                    pid_corrente+=1
+                                    num_imgs_per_tracklet.append((len(clip),i))
+                                    del clip[:]
+
+                        num_tracklets= len(tracklets)
+                        num_pids=pid_corrente
+                    
+                        return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+                if(split=='gallery'):
+                    for i in range(1,len(file_gallery)/2): 
+                            #######
+                            stringa='Image-'+str(i)+'-'
+                            for frame in file_gallery:
+                                    if stringa in frame:
+                                        clip.append(frame) #qui crea la lista di frame che compongono la clip
+                                if len(clip)!=0:
+                                    tracklets.append((clip[:],i)) 
+                                    pid_corrente+=1
+                                    num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
+                                    del clip[:] #svuota clip 
+                
+                        num_tracklets= len(tracklets)
+                        num_pids=pid_corrente
+                    return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+            else:
+                for i in range(1,len(lista_file)/2):
+            
+                        #prendo tutti i frame di indice i
+                        stringa='/Image-'+str(i)+'-*.jpg'
+                        all_frames=glob.glob(dirname+stringa)
+                        if len(all_frames)!=0:
+                            #se vuoto non fare nulla, vuol dire non esiste nessun clip con nome Image-i-..jpg 
+                            tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
+                            pid_corrente+=1 #incremento il numero di pid
+                            num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
+                num_tracklets= len(tracklets)
+                num_pids=pid_corrente
+                return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 
 
-			
-		
-			
-			
+            
+        
+            
+            
 
-		
+        
 """Create dataset"""
 
 __factory = {
-	'mars': Mars,
-	'ilidsvid': iLIDSVID,
-	'prid': PRID,
-	'dataset': Dataset,
+    'mars': Mars,
+    'ilidsvid': iLIDSVID,
+    'prid': PRID,
+    'dataset': Dataset,
 }
 
 def get_names():
@@ -557,7 +551,6 @@ if __name__ == '__main__':
     dataset = iLIDSVID()
     dataset = PRID()
     dataset = Dataset()
-
 
 
 
