@@ -118,8 +118,14 @@ def main():
         pin_memory=pin_memory, drop_last=True,
     )
 
-    testloader = DataLoader(
-        VideoDataset(dataset.test, seq_len=args.seq_len, sample='dense', transform=transform_test),
+    queryloader = DataLoader(
+        VideoDataset(dataset.query, seq_len=args.seq_len, sample='dense', transform=transform_test),
+        batch_size=args.test_batch, shuffle=False, num_workers=args.workers,
+        pin_memory=pin_memory, drop_last=False,
+    )
+
+    galleryloader = DataLoader(
+        VideoDataset(dataset.gallery, seq_len=args.seq_len, sample='dense', transform=transform_test),
         batch_size=args.test_batch, shuffle=False, num_workers=args.workers,
         pin_memory=pin_memory, drop_last=False,
     )
@@ -212,11 +218,11 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
         if (batch_idx+1) % args.print_freq == 0:
             print("Batch {}/{}\t Loss {:.6f} ({:.6f})".format(batch_idx+1, len(trainloader), losses.val, losses.avg))
 
-def test(model, testloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
+def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
     model.eval()
 
     qf, q_pids, q_camids = [], [], []
-    for batch_idx, (imgs, pids, camids) in enumerate(testloader):
+    for batch_idx, (imgs, pids, camids) in enumerate(queryloader):
         if use_gpu:
             imgs = imgs.cuda()
         imgs = Variable(imgs, volatile=True)
@@ -235,9 +241,31 @@ def test(model, testloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
     q_pids = np.asarray(q_pids)
     q_camids = np.asarray(q_camids)
 
-    print("Extracted features for test set, obtained {}-by-{} matrix".format(qf.size(0), qf.size(1)))
+    print("Extracted features for query set, obtained {}-by-{} matrix".format(qf.size(0), qf.size(1)))
 
-    
+    gf, g_pids, g_camids = [], [], []
+    for batch_idx, (imgs, pids, camids) in enumerate(galleryloader):
+        if use_gpu:
+            imgs = imgs.cuda()
+        imgs = Variable(imgs, volatile=True)
+        b, n, s, c, h, w = imgs.size()
+        imgs = imgs.view(b*n, s , c, h, w)
+        assert(b==1)
+        features = model(imgs)
+        features = features.view(n, -1)
+        if pool == 'avg':
+            features = torch.mean(features, 0)
+        else:
+            features, _ = torch.max(features, 0)
+        features = features.data.cpu()
+        gf.append(features)
+        g_pids.extend(pids)
+        g_camids.extend(camids)
+    gf = torch.stack(gf)
+    g_pids = np.asarray(g_pids)
+    g_camids = np.asarray(g_camids)
+
+    print("Extracted features for gallery set, obtained {}-by-{} matrix".format(gf.size(0), gf.size(1)))
     print("Computing distance matrix")
 
     m, n = qf.size(0), gf.size(0)

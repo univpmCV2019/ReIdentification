@@ -430,15 +430,16 @@ class Dataset(object):
 	test_dir = osp.join(root, 'test')
 	def _init_(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
-			train, num_train_tracklets, num_train_pids, num_imgs_train =self._process_data(train_dir)
-			test, num_test_tracklets, num_test_pids, num_imgs_test =self.process_data(test_test)
-			num_imgs_per_tracklet = num_imgs_train + num_imgs_test
+			train, num_train_tracklets, num_train_pids, num_imgs_train =self._process_data(train_dir,'false')
+			query, num_query_tracklets, num_query_pids, num_imgs_query =self.process_data(test_dir,'query')
+			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery =self.process_data(test_dir,'gallery')
+			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
 			avg_num = np.mean(num_imgs_per_tracklet)
 		
-			num_total_pids = num_train_pids + num_test_pids
-			num_total_tracklets = num_train_tracklets + num_test_tracklets
+			num_total_pids = num_train_pids + num_query_pids
+			num_total_tracklets = num_train_tracklets + num_query_tracklets + num_gallery_tracklets
         
 			print("=> Dataset caricato")
 			print("Dataset statistics:")
@@ -446,54 +447,94 @@ class Dataset(object):
 			print("  subset   | # ids | # tracklets")
 			print("  ------------------------------")
 			print("  train    | {:5d} | {:8d}".format(num_train_pids, num_train_tracklets))
-			print("  test    | {:5d} | {:8d}".format(num_test_pids, num_test_tracklets))
+			print("  query    | {:5d} | {:8d}".format(num_query_pids, num_query_tracklets))
+			print("  gallery  | {:5d} | {:8d}".format(num_gallery_pids, num_gallery_tracklets))
 			print("  ------------------------------")
 			print("  total    | {:5d} | {:8d}".format(num_total_pids, num_total_tracklets))
 			print("  number of images per tracklet: {} ~ {}, average {:.1f}".format(min_num, max_num, avg_num))
 			print("  ------------------------------")
 
 			self.train = train
-			self.test = test
+			self.query = query
+			self.gallery = gallery
 
 			self.num_train_pids = num_train_pids
-			self.num_test_pids = num_test_pids
+			self.num_query_pids = num_query_pids
+			self.num_gallery_pids = num_gallery_pids
+
 			
-	def _process_data(self, dirname):
-			#separare tutti i file in clip in base al nome (?)
-			tracklets = []
-			clip= []
-			num_imgs_per_tracklet = []
-			pid=1
-			lista_file= glob.glob(dirname+'/*')
-			ultimo_file= max(lista_file, key=os.path.getctime)
-			for filename in lista_file:
-				if not tracklets:
-					clip.append((filename,pid))
-				else:
-					stringa='Image-'+pid+'-'
-					if(stringa in filename):
-						clip.append((filename,pid))
-						if(filename==ultimo_file):
-							tracklets.append(clip)
-							pid+=1
-							num_imgs_per_tracklet.append(len(clip))
-							del clip[:]
-					else:
-						tracklets.append(clip)
-						pid+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:]
-						clip.append((filename,pid))
-						
-						
-					
-        
-				
+	
+	def _process_data(dirname,split):
+    tracklets = []
+    clip=[]
+    num_imgs_per_tracklet = []
+    pid_corrente=0
+    lista_file= glob.glob(dirname+'/*') #prendo tutti i file
+    if(dirname==test_dir): #se cartella è di test 
+        #divido i file in due set 
+        split_1 = int(0.8 * len(lista_file))
+        file_query=lista_file[split_1:]
+        file_gallery=lista_file[:split_1]
+        if(split=='query'):
+            for i in range(1,len(file_query)/2):
+                #######
+                stringa='Image-'+str(i)+'-'
+                for frame in file_query:
+                    if stringa in frame:
+                        clip.append(frame)
+                        
+                        
 
-			num_tracklets = len(tracklets)
-			num_pids = pid
+                if len(clip)!=0:
+                    tracklets.append((clip[:],i)) 
+                    pid_corrente+=1
+                    num_imgs_per_tracklet.append((len(clip),i))
+                    del clip[:]
 
-			return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+            num_tracklets= len(tracklets)
+            num_pids=pid_corrente
+                    
+            return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+        if(split=='gallery'):
+            
+            for i in range(1,len(file_gallery)/2): 
+                #######
+                stringa='Image-'+str(i)+'-'
+                for frame in file_gallery:
+                    if stringa in frame:
+                        clip.append(frame) #qui crea la lista di frame che compongono la clip
+                        
+
+                if len(clip)!=0:
+                    tracklets.append((clip[:],i)) 
+                    pid_corrente+=1
+                    num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
+                    del clip[:] #svuota clip 
+                
+            num_tracklets= len(tracklets)
+            num_pids=pid_corrente
+        return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+    else:
+        for i in range(1,len(lista_file)/2):
+            
+            #prendo tutti i frame di indice i
+            stringa='/Image-'+str(i)+'-*.jpg'
+            all_frames=glob.glob(dirname+stringa)
+            if len(all_frames)!=0:
+                #se vuoto non fare nulla, vuol dire non c'è nessun clip con nome Image-i-..jpg 
+                tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
+                pid_corrente+=1 #incremento il numero di pid
+                num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
+        num_tracklets= len(tracklets)
+        num_pids=pid_corrente
+        return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+
+
+			
+		
+			
+			
+
 		
 """Create dataset"""
 
@@ -501,6 +542,7 @@ __factory = {
     'mars': Mars,
     'ilidsvid': iLIDSVID,
     'prid': PRID,
+	'dataset': Dataset,
 }
 
 def get_names():
@@ -517,6 +559,7 @@ if __name__ == '__main__':
     #dataset = Mars()
     dataset = iLIDSVID()
     dataset = PRID()
+	dataset = Dataset()
 
 
 
