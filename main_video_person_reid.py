@@ -26,7 +26,7 @@ from samplers import RandomIdentitySampler
 
 parser = argparse.ArgumentParser(description='Train video model with cross entropy loss')
 # Datasets
-parser.add_argument('-d', '--dataset', type=str, default='mars',
+parser.add_argument('-d', '--dataset', type=str, default='dataset',
                     choices=data_manager.get_names())
 parser.add_argument('-j', '--workers', default=4, type=int,
                     help="number of data loading workers (default: 4)")
@@ -288,10 +288,3 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
