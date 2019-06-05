@@ -481,9 +481,9 @@ class Dataset(object):
 						if stringa in frame:
 							clip.append(frame)
 					if len(clip)!=0:
-						tracklets.append((clip[:],i)) 
+						tracklets.append((clip[:],i,1)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i,1))  #lista_immagini,id,num_camera
+						num_imgs_per_tracklet.append(len(clip))
 						del clip[:]
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
@@ -496,9 +496,9 @@ class Dataset(object):
 						if stringa in frame:
 							clip.append(frame) #qui crea la lista di frame che compongono la clip
 					if len(clip)!=0:
-						tracklets.append((clip[:],i)) 
+						tracklets.append((clip[:],i,1)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i,1))
+						num_imgs_per_tracklet.append(len(clip))
 						del clip[:] #svuota clip 
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
@@ -521,9 +521,9 @@ class Dataset(object):
 						if stringa in frame:
 							clip.append(frame)
 					if len(clip)!=0:
-						tracklets.append((clip[:],i)) 
+						tracklets.append((clip[:],i,1)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i,1))
+						num_imgs_per_tracklet.append(len(clip))
 						del clip[:]
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
