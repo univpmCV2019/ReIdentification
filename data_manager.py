@@ -421,15 +421,17 @@ class Dataset(object):
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
 	train_dir = osp.join(root, 'Train100')
+	lista_file_train= glob.glob(dirname+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'Test100')
+	lista_file_test= glob.glob(dirname+'/*') #prendo tutti i file
 	def __init__(self,min_seq_len=0):
-			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
+			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(self.train_dir, 'false')
+			  self._process_data(self.lista_file_train, 'false')
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(self.test_dir, 'query')
+			  self._process_data(self.lista_file_test, 'query')
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(self.test_dir, 'gallery')
+			  self._process_data(self.lista_file_test, 'gallery')
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
@@ -461,17 +463,16 @@ class Dataset(object):
 			
 			
 			
-	def _process_data(self, dirname, split):
+	def _process_data(self, listafile, split):
 		tracklets = []
 		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=0
-		lista_file= glob.glob(dirname+'/*') #prendo tutti i file
-		if(dirname==self.test_dir): #se cartella di test 
+		if(listafile==self.lista_file_test): #se cartella di test 
 			#divido i file in due set 
-			split_1 = int(0.8 * len(lista_file))
-			file_query=lista_file[split_1:]
-			file_gallery=lista_file[:split_1]
+			split_1 = int(0.8 * len(listafile))
+			file_query=listafile[split_1:]
+			file_gallery=listafile[:split_1]
 			if(split=='query'):
 				for i in range(1,len(file_query)/2):
 					#######
@@ -503,7 +504,7 @@ class Dataset(object):
 				num_pids=pid_corrente
 				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 			else:
-				for i in range(1,len(lista_file)/2):
+				for i in range(1,len(listafile)/2):
 					#prendo tutti i frame di indice i
 					stringa='/Image-'+str(i)+'-*.jpg'
 					all_frames=glob.glob(dirname+stringa)
