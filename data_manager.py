@@ -420,16 +420,16 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'Train5')
-	test_dir = osp.join(root, 'Test5')
+	train_dir = osp.join(root, 'Train100')
+	test_dir = osp.join(root, 'Test100')
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(train_dir,'false')
+			  self._process_data(self,train_dir,'false')
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(test_dir,'query')
+			  self._process_data(self,test_dir,'query')
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(test_dir,'gallery')
+			  self._process_data(self,test_dir,'gallery')
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
