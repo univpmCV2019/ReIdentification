@@ -474,7 +474,7 @@ class Dataset(object):
 			file_query=listafile[split_1:]
 			file_gallery=listafile[:split_1]
 			if(split=='query'):
-				for i in range(1,len(file_query)/2):
+				for i in range(1,len(file_query)/10):
 					#######
 					stringa='Image-'+str(i)+'-'
 					print(file_query)
@@ -490,7 +490,7 @@ class Dataset(object):
 				num_pids=pid_corrente
 				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 			if(split=='gallery'):
-				for i in range(1,len(file_gallery)/2): 
+				for i in range(1,len(file_gallery)/10): 
 					#######
 					stringa='Image-'+str(i)+'-'
 					for frame in file_gallery:
@@ -505,7 +505,7 @@ class Dataset(object):
 				num_pids=pid_corrente
 				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		else:
-				for i in range(1,len(listafile)/2):
+				for i in range(1,len(listafile)/10):
 					#prendo tutti i frame di indice i
 					#stringa='/Image-'+str(i)+'-*.jpg'
 					#all_frames=glob.glob(dirname+stringa)
@@ -518,7 +518,6 @@ class Dataset(object):
 				#num_pids=pid_corrente
 				#return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 					stringa='Image-'+str(i)+'-'
-					print('test')
 					for frame in listafile:
 						if stringa in frame:
 							clip.append(frame)
