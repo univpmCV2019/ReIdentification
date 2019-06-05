@@ -467,7 +467,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		pid_corrente=0
 		lista_file= glob.glob(dirname+'/*') #prendo tutti i file
-		if(dirname==test_dir): #se cartella di test 
+		if(dirname==self.test_dir): #se cartella di test 
 			#divido i file in due set 
 			split_1 = int(0.8 * len(lista_file))
 			file_query=lista_file[split_1:]
