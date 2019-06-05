@@ -504,7 +504,7 @@ class Dataset(object):
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
 				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-			else:
+		else:
 				for i in range(1,len(listafile)/2):
 					#prendo tutti i frame di indice i
 					#stringa='/Image-'+str(i)+'-*.jpg'
