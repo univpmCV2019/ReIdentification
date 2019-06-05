@@ -421,9 +421,7 @@ class Dataset(object):
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
 	train_dir = osp.join(root, 'Train100')
-	print(train_dir)
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
-	print(len(lista_file_train))
 	test_dir = osp.join(root, 'Test100')
 	lista_file_test= glob.glob(test_dir+'/*') #prendo tutti i file
 	def __init__(self,min_seq_len=0):
@@ -479,6 +477,7 @@ class Dataset(object):
 				for i in range(1,len(file_query)/2):
 					#######
 					stringa='Image-'+str(i)+'-'
+					print(file_query)
 					for frame in file_query:
 						if stringa in frame:
 							clip.append(frame)
