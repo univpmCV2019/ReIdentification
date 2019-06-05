@@ -477,7 +477,6 @@ class Dataset(object):
 				for i in range(1,len(file_query)/10):
 					#######
 					stringa='Image-'+str(i)+'-'
-					print(file_query)
 					for frame in file_query:
 						if stringa in frame:
 							clip.append(frame)
