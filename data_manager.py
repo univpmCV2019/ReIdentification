@@ -507,17 +507,29 @@ class Dataset(object):
 			else:
 				for i in range(1,len(listafile)/2):
 					#prendo tutti i frame di indice i
-					stringa='/Image-'+str(i)+'-*.jpg'
-					all_frames=glob.glob(dirname+stringa)
-					if len(all_frames)!=0:
+					#stringa='/Image-'+str(i)+'-*.jpg'
+					#all_frames=glob.glob(dirname+stringa)
+					#if len(all_frames)!=0:
 						#se vuoto non fare nulla, vuol dire non esiste nessun clip con nome Image-i-..jpg 
-						tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
-						pid_corrente+=1 #incremento il numero di pid
-						num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
+						#tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
+						#pid_corrente+=1 #incremento il numero di pid
+						#num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
+				#num_tracklets= len(tracklets)
+				#num_pids=pid_corrente
+				#return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+					stringa='Image-'+str(i)+'-'
+					print('test')
+					for frame in listafile:
+						if stringa in frame:
+							clip.append(frame)
+					if len(clip)!=0:
+						tracklets.append((clip[:],i)) 
+						pid_corrente+=1
+						num_imgs_per_tracklet.append((len(clip),i))
+						del clip[:]
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
 				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-				
 				
 """Create dataset"""
 
