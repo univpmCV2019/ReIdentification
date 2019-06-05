@@ -483,7 +483,7 @@ class Dataset(object):
 					if len(clip)!=0:
 						tracklets.append((clip[:],i)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i))
+						num_imgs_per_tracklet.append((len(clip),i,1)) #tracklets è in formato lista_immagini,id,num_camera
 						del clip[:]
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
@@ -498,7 +498,7 @@ class Dataset(object):
 					if len(clip)!=0:
 						tracklets.append((clip[:],i)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i)) #questo funziona, salva di volta in volta la lunghezza di clip con relativo pid... 
+						num_imgs_per_tracklet.append((len(clip),i,1))
 						del clip[:] #svuota clip 
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
@@ -523,7 +523,7 @@ class Dataset(object):
 					if len(clip)!=0:
 						tracklets.append((clip[:],i)) 
 						pid_corrente+=1
-						num_imgs_per_tracklet.append((len(clip),i))
+						num_imgs_per_tracklet.append((len(clip),i,1))
 						del clip[:]
 				num_tracklets= len(tracklets)
 				num_pids=pid_corrente
