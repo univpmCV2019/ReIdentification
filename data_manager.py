@@ -425,11 +425,11 @@ class Dataset(object):
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(self, self.train_dir, 'false')
+			  self._process_data(self.train_dir, 'false')
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(self, self.test_dir, 'query')
+			  self._process_data(self.test_dir, 'query')
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(self, self.test_dir, 'gallery')
+			  self._process_data(self.test_dir, 'gallery')
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
