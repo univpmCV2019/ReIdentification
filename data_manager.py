@@ -420,9 +420,9 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'Train100')
-	test_dir = osp.join(root, 'Test100')
-	def _init_(self,min_seq_len=0):
+	train_dir = osp.join(root, 'Train5')
+	test_dir = osp.join(root, 'Test5')
+	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.train_dir), len(self.test_dir)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
 			  self._process_data(train_dir,'false')
