@@ -430,11 +430,11 @@ class Dataset(object):
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(self.lista_file_train, 'false')
+			  self._process_data(self.lista_file_train)
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(self.file_query, 'query')
+			  self._process_data(self.file_query)
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(self.file_gallery, 'gallery')
+			  self._process_data(self.file_gallery)
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
@@ -466,75 +466,24 @@ class Dataset(object):
 			
 			
 			
-	def _process_data_train(self, listafile):
+	def _process_data(self, listafile):
 		tracklets = []
 		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=0
-				for i in range(1,len(listafile)):
-					#prendo tutti i frame di indice i
-					#stringa='/Image-'+str(i)+'-*.jpg'
-					#all_frames=glob.glob(dirname+stringa)
-					#if len(all_frames)!=0:
-						#se vuoto non fare nulla, vuol dire non esiste nessun clip con nome Image-i-..jpg 
-						#tracklets.append((all_frames,i)) #salvo in tracklets la lista di frame e il pid della persona
-						#pid_corrente+=1 #incremento il numero di pid
-						#num_imgs_per_tracklet.append((len(all_frames),i)) #salvo il numero di frame di quella clip
-				#num_tracklets= len(tracklets)
-				#num_pids=pid_corrente
-				#return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-					stringa='Image-'+str(i)+'-'
-					for frame in listafile:
-						if stringa in frame:
-							clip.append(frame)
-					if len(clip)!=0:
-						tracklets.append((clip[:],i,1)) 
-						pid_corrente+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:]
-				num_tracklets= len(tracklets)
-				num_pids=pid_corrente
-				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-				
-	def _process_data_query(self, listafile):
-		tracklets = []
-		clip=[]
-		num_imgs_per_tracklet = []
-		pid_corrente=0
-				for i in range(1,len(listafile)):
-					#######
-					stringa='Image-'+str(i)+'-'
-					for frame in listafile:
-						if stringa in frame:
-							clip.append(frame)
-					if len(clip)!=0:
-						tracklets.append((clip[:],i,1)) 
-						pid_corrente+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:]
-				num_tracklets= len(tracklets)
-				num_pids=pid_corrente
-				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-				
-	def _process_data_gallery(self, listafile):
-		tracklets = []
-		clip=[]
-		num_imgs_per_tracklet = []
-		pid_corrente=0
-				for i in range(1,len(listafile)):
-					#######
-					stringa='Image-'+str(i)+'-'
-					for frame in listafile:
-						if stringa in frame:
-							clip.append(frame)
-					if len(clip)!=0:
-						tracklets.append((clip[:],i,1)) 
-						pid_corrente+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:]
-				num_tracklets= len(tracklets)
-				num_pids=pid_corrente
-				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+		for i in range(1,len(listafile)):
+			stringa='Image-'+str(i)+'-'
+			for frame in listafile:
+				if stringa in frame:
+					clip.append(frame)
+			if len(clip)!=0:
+				tracklets.append((clip[:],i,1)) 
+				pid_corrente+=1
+				num_imgs_per_tracklet.append(len(clip))
+				del clip[:]
+		num_tracklets= len(tracklets)
+		num_pids=pid_corrente
+		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 				
 """Create dataset"""
 
