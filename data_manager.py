@@ -424,14 +424,17 @@ class Dataset(object):
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'Test5')
 	lista_file_test= glob.glob(test_dir+'/*') #prendo tutti i file
+	split= int(0.8 * len(self.lista_file_test))
+	file_query=lista_file_test[split:]
+	file_gallery=lista_file_test[:split]
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
 			  self._process_data(self.lista_file_train, 'false')
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data(self.lista_file_test, 'query')
+			  self._process_data(self.file_query, 'query')
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data(self.lista_file_test, 'gallery')
+			  self._process_data(self.file_gallery, 'gallery')
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
@@ -463,47 +466,11 @@ class Dataset(object):
 			
 			
 			
-	def _process_data(self, listafile, split):
+	def _process_data_train(self, listafile):
 		tracklets = []
 		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=0
-		if(listafile==self.lista_file_test): #se cartella di test 
-			#divido i file in due set 
-			split_1 = int(0.8 * len(listafile))
-			file_query=listafile[split_1:]
-			file_gallery=listafile[:split_1]
-			if(split=='query'):
-				for i in range(1,len(file_query)):
-					#######
-					stringa='Image-'+str(i)+'-'
-					for frame in file_query:
-						if stringa in frame:
-							clip.append(frame)
-					if len(clip)!=0:
-						tracklets.append((clip[:],i,1)) 
-						pid_corrente+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:]
-				num_tracklets= len(tracklets)
-				num_pids=pid_corrente
-				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-			if(split=='gallery'):
-				for i in range(1,len(file_gallery)): 
-					#######
-					stringa='Image-'+str(i)+'-'
-					for frame in file_gallery:
-						if stringa in frame:
-							clip.append(frame) #qui crea la lista di frame che compongono la clip
-					if len(clip)!=0:
-						tracklets.append((clip[:],i,1)) 
-						pid_corrente+=1
-						num_imgs_per_tracklet.append(len(clip))
-						del clip[:] #svuota clip 
-				num_tracklets= len(tracklets)
-				num_pids=pid_corrente
-				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-		else:
 				for i in range(1,len(listafile)):
 					#prendo tutti i frame di indice i
 					#stringa='/Image-'+str(i)+'-*.jpg'
@@ -516,6 +483,46 @@ class Dataset(object):
 				#num_tracklets= len(tracklets)
 				#num_pids=pid_corrente
 				#return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+					stringa='Image-'+str(i)+'-'
+					for frame in listafile:
+						if stringa in frame:
+							clip.append(frame)
+					if len(clip)!=0:
+						tracklets.append((clip[:],i,1)) 
+						pid_corrente+=1
+						num_imgs_per_tracklet.append(len(clip))
+						del clip[:]
+				num_tracklets= len(tracklets)
+				num_pids=pid_corrente
+				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+				
+	def _process_data_query(self, listafile):
+		tracklets = []
+		clip=[]
+		num_imgs_per_tracklet = []
+		pid_corrente=0
+				for i in range(1,len(listafile)):
+					#######
+					stringa='Image-'+str(i)+'-'
+					for frame in listafile:
+						if stringa in frame:
+							clip.append(frame)
+					if len(clip)!=0:
+						tracklets.append((clip[:],i,1)) 
+						pid_corrente+=1
+						num_imgs_per_tracklet.append(len(clip))
+						del clip[:]
+				num_tracklets= len(tracklets)
+				num_pids=pid_corrente
+				return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+				
+	def _process_data_gallery(self, listafile):
+		tracklets = []
+		clip=[]
+		num_imgs_per_tracklet = []
+		pid_corrente=0
+				for i in range(1,len(listafile)):
+					#######
 					stringa='Image-'+str(i)+'-'
 					for frame in listafile:
 						if stringa in frame:
