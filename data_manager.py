@@ -429,6 +429,8 @@ class Dataset(object):
 	split_1= int(0.8 * len(lista_file_test))
 	file_query=lista_file_test[split_1:]
 	file_gallery=lista_file_test[:split_1]
+	per_query=file_gallery[split_1:]
+	file_query.append(per_query)
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
