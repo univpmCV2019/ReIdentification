@@ -425,10 +425,10 @@ class Dataset(object):
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'Test100')
 	lista_file_test= glob.glob(test_dir+'/*')
-	lista_random=random.shuffle(lista_file_test,random)
-	split= int(0.8 * len(lista_random))
-	file_query=lista_random[split:]
-	file_gallery=lista_random[:split]
+	random.shuffle(lista_file_test)
+	split= int(0.8 * len(lista_file_test))
+	file_query=lista_file_test[split:]
+	file_gallery=lista_file_test[:split]
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
