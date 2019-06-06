@@ -32,12 +32,12 @@ parser.add_argument('-j', '--workers', default=4, type=int,
 					help="number of data loading workers (default: 4)")
 parser.add_argument('--height', type=int, default=224,
 					help="height of an image (default: 224)")
-parser.add_argument('--width', type=int, default=112,
+parser.add_argument('--width', type=int, default=224,
 					help="width of an image (default: 112)")
-parser.add_argument('--seq-len', type=int, default=4, help="number of images to sample in a tracklet")
+parser.add_argument('--seq-len', type=int, default=2, help="number of images to sample in a tracklet default 4")
 # Optimization options
-parser.add_argument('--max-epoch', default=800, type=int,
-					help="maximum epochs to run")
+parser.add_argument('--max-epoch', default=400, type=int,
+					help="maximum epochs to run default 800")
 parser.add_argument('--start-epoch', default=0, type=int,
 					help="manual epoch number (useful on restarts)")
 parser.add_argument('--train-batch', default=32, type=int,
@@ -54,8 +54,8 @@ parser.add_argument('--weight-decay', default=5e-04, type=float,
 parser.add_argument('--margin', type=float, default=0.3, help="margin for triplet loss")
 parser.add_argument('--num-instances', type=int, default=4,
 					help="number of instances per identity")
-parser.add_argument('--htri-only', action='store_true', default=False,
-					help="if this is True, only htri loss is used in training")
+parser.add_argument('--htri-only', action='store_true', default=True,
+					help="if this is True, only htri loss is used in training default false")
 # Architecture
 parser.add_argument('-a', '--arch', type=str, default='resnet50tp', help="resnet503d, resnet50tp, resnet50ta, resnetrnn")
 parser.add_argument('--pool', type=str, default='avg', choices=['avg', 'max'])
