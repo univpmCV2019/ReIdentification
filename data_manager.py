@@ -426,9 +426,9 @@ class Dataset(object):
 	test_dir = osp.join(root, 'Test5')
 	lista_file_test= glob.glob(test_dir+'/*')
 	random.shuffle(lista_file_test)
-	split= int(0.8 * len(lista_file_test))
-	file_query=lista_file_test[split:]
-	file_gallery=lista_file_test[:split]
+	split_1= int(0.8 * len(lista_file_test))
+	file_query=lista_file_test[split_1:]
+	file_gallery=lista_file_test[:split_1]
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
@@ -473,7 +473,7 @@ class Dataset(object):
 		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=0
-		for i in range(1,len(listafile)):
+		for i in range(1,len(listafile)/2):
 			stringa='Image-'+str(i)+'-'
 			for frame in listafile:
 				if stringa in frame:
