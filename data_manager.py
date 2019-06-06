@@ -428,9 +428,7 @@ class Dataset(object):
 	random.shuffle(lista_file_test)
 	split_1= int(0.8 * len(lista_file_test))
 	file_query=lista_file_test[split_1:]
-	print(file_query)
 	file_gallery=lista_file_test[:split_1]
-	print(file_gallery)
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
@@ -474,7 +472,7 @@ class Dataset(object):
 		tracklets = []
 		clip=[]
 		num_imgs_per_tracklet = []
-		pid_corrente=0
+		pid_corrente=[]
 		for i in range(1,len(listafile)/2):
 			stringa='Image-'+str(i)+'-'
 			for frame in listafile:
@@ -482,11 +480,12 @@ class Dataset(object):
 					clip.append(frame)
 			if len(clip)!=0:
 				tracklets.append((clip[:],i,1)) 
-				pid_corrente+=1
+				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
 				del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=pid_corrente
+		num_pids=len(pid_corrente)
+		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 				
 """Create dataset"""
