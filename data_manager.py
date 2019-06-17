@@ -490,7 +490,7 @@ class Dataset(object):
 				tracklets.append((clip,i,0)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
-				del clip[:]
+				#del clip[:]
 		num_tracklets= len(tracklets)
 		num_pids=len(pid_corrente)
 		print(num_pids)
@@ -514,7 +514,7 @@ class Dataset(object):
 				tracklets.append((clip,i,0)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
-				del clip[:]
+				#del clip[:]
 		num_tracklets= len(tracklets)
 		num_pids=len(pid_corrente)
 		print(num_pids)
@@ -537,7 +537,7 @@ class Dataset(object):
 				tracklets.append((clip,i,0)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
-				del clip[:]
+				#del clip[:]
 		num_tracklets= len(tracklets)
 		num_pids=len(pid_corrente)
 		print(num_pids)
