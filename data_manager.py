@@ -475,13 +475,12 @@ class Dataset(object):
 			
 	def _process_data(self, train_dir):
 		tracklets = []
-		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=[]
 		inizio=0
 		fine=500
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.png'
+			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
@@ -499,13 +498,12 @@ class Dataset(object):
 		
 	def _process_data2(self, test_dir):
 		tracklets = []
-		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=[]
 		inizio=0
 		fine=50
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.png'
+			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
@@ -522,19 +520,18 @@ class Dataset(object):
 		
 	def _process_data3(self, test_dir):
 		tracklets = []
-		clip=[]
 		num_imgs_per_tracklet = []
 		pid_corrente=[]
 		inizio=51
 		fine=500
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.png'
+			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
-				tracklets.append((clip[:],i,0)) 
+				tracklets.append((clip[:],i,1)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
 				del clip[:]
