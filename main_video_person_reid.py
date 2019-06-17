@@ -54,7 +54,7 @@ parser.add_argument('--weight-decay', default=5e-04, type=float,
 parser.add_argument('--margin', type=float, default=0.3, help="margin for triplet loss")
 parser.add_argument('--num-instances', type=int, default=4,
 					help="number of instances per identity")
-parser.add_argument('--htri-only', action='store_true', default=False,
+parser.add_argument('--htri-only', action='store_true', default=True,
 					help="if this is True, only htri loss is used in training default false")
 # Architecture
 parser.add_argument('-a', '--arch', type=str, default='resnet50tp', help="resnet503d, resnet50tp, resnet50ta, resnetrnn")
