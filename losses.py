@@ -37,7 +37,6 @@ class CrossEntropyLabelSmooth(nn.Module):
 			targets: ground truth labels with shape (num_classes)
 		"""
 		log_probs = self.logsoftmax(inputs)
-		print(targets.unsqueeze(1).data.cpu)
 		targets = torch.zeros(log_probs.size()).scatter_(1, targets.unsqueeze(1).data.cpu(), 1)
 		if self.use_gpu: targets = targets.cuda()
 		targets = Variable(targets, requires_grad=False)
