@@ -437,11 +437,11 @@ class Dataset(object):
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(self.lista_file_train)
+			  self._process_data(self.train_dir)
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data2(self.lista_file_test)
+			  self._process_data2(self.test_dir)
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data3(self.lista_file_test)
+			  self._process_data3(self.test_dir)
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
