@@ -520,7 +520,7 @@ class Dataset(object):
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
-		def _process_data3(self, test_dir):
+	def _process_data3(self, test_dir):
 		tracklets = []
 		clip=[]
 		num_imgs_per_tracklet = []
