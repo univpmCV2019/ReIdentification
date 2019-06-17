@@ -482,7 +482,7 @@ class Dataset(object):
 		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.png'
-			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
