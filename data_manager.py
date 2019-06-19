@@ -511,7 +511,7 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,pid,0))
+				tracklets.append((clip,pid,1))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
@@ -524,7 +524,7 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		pid=0
-		inizio=10
+		inizio=15
 		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
@@ -534,7 +534,7 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,pid,0))
+				tracklets.append((clip,pid,2))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
