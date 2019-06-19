@@ -476,9 +476,9 @@ class Dataset(object):
 	def _process_data(self, train_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
-		pid_corrente=[]
+		pid=0
 		inizio=0
-		fine=20
+		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -487,12 +487,12 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,i,0)) 
-				pid_corrente.append(i)
+				tracklets.append((clip,pid,0))
+				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=len(pid_corrente)
+		num_pids=pid
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
@@ -500,46 +500,46 @@ class Dataset(object):
 	def _process_data2(self, test_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
-		pid_corrente=[]
-		inizio=11
-		fine=20
+		pid=0
+		inizio=0
+		fine=200
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
-			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,i,1)) 
-				pid_corrente.append(i)
+				tracklets.append((clip,pid,0))
+				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=len(pid_corrente)
+		num_pids=pid
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
 	def _process_data3(self, test_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
-		pid_corrente=[]
-		inizio=0
-		fine=20
+		pid=0
+		inizio=180
+		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
-			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,i,2)) 
-				pid_corrente.append(i)
+				tracklets.append((clip,pid,0))
+				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=len(pid_corrente)
+		num_pids=pid
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 				
