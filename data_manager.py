@@ -502,7 +502,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		pid=0
 		inizio=0
-		fine=200
+		fine=20
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -524,7 +524,7 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		pid=0
-		inizio=180
+		inizio=10
 		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
