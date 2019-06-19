@@ -511,7 +511,7 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,i,0)) 
+				tracklets.append((clip,i,1)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
@@ -534,7 +534,7 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,i,0)) 
+				tracklets.append((clip,i,2)) 
 				pid_corrente.append(i)
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
