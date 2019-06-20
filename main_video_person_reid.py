@@ -36,7 +36,7 @@ parser.add_argument('--width', type=int, default=224,
 					help="width of an image (default: 112)")
 parser.add_argument('--seq-len', type=int, default=4, help="number of images to sample in a tracklet default 4")
 # Optimization options
-parser.add_argument('--max-epoch', default=800, type=int,
+parser.add_argument('--max-epoch', default=300, type=int,
 					help="maximum epochs to run default 800")
 parser.add_argument('--start-epoch', default=0, type=int,
 					help="manual epoch number (useful on restarts)")
