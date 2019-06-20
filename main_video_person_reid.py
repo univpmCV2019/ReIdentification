@@ -36,7 +36,7 @@ parser.add_argument('--width', type=int, default=224,
 					help="width of an image (default: 112)")
 parser.add_argument('--seq-len', type=int, default=4, help="number of images to sample in a tracklet default 4")
 # Optimization options
-parser.add_argument('--max-epoch', default=100, type=int,
+parser.add_argument('--max-epoch', default=300, type=int,
 					help="maximum epochs to run default 800")
 parser.add_argument('--start-epoch', default=0, type=int,
 					help="manual epoch number (useful on restarts)")
@@ -65,7 +65,7 @@ parser.add_argument('--print-freq', type=int, default=80, help="print frequency"
 parser.add_argument('--seed', type=int, default=1, help="manual seed")
 parser.add_argument('--pretrained-model', type=str, default='/home/jiyang/Workspace/Works/video-person-reid/3dconv-person-reid/pretrained_models/resnet-50-kinetics.pth', help='need to be set for resnet3d models')
 parser.add_argument('--evaluate', action='store_true', help="evaluation only")
-parser.add_argument('--eval-step', type=int, default=5,
+parser.add_argument('--eval-step', type=int, default=50,
 					help="run evaluation for every N epochs default 50  (set to -1 to test after training)")
 parser.add_argument('--save-dir', type=str, default='log')
 parser.add_argument('--use-cpu', action='store_true', help="use cpu")
