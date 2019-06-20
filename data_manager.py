@@ -486,7 +486,7 @@ class Dataset(object):
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
-				clip=tuple(clip)
+				#clip=tuple(clip)
 				tracklets.append((clip,pid,1))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
@@ -510,7 +510,7 @@ class Dataset(object):
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
-				clip=tuple(clip)
+				#clip=tuple(clip)
 				tracklets.append((clip,pid,1))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
@@ -533,7 +533,7 @@ class Dataset(object):
 				#if stringa in frame:
 					#clip.append(frame)
 			if len(clip)!=0:
-				clip=tuple(clip)
+				#clip=tuple(clip)
 				tracklets.append((clip,pid,2))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
