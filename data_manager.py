@@ -487,7 +487,7 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				clip=tuple(clip)
-				tracklets.append((clip,pid,0))
+				tracklets.append((clip,pid,1))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
