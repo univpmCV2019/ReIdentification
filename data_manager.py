@@ -421,9 +421,9 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'Train50')
+	train_dir = osp.join(root, 'Train100')
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
-	test_dir = osp.join(root, 'Test50')
+	test_dir = osp.join(root, 'Test100')
 	lista_file_test= glob.glob(test_dir+'/*')
 	random.shuffle(lista_file_test)
 	split_1= int(0.8 * len(lista_file_test))
@@ -478,7 +478,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		pid=0
 		inizio=0
-		fine=25
+		fine=2000
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -497,15 +497,15 @@ class Dataset(object):
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
 		
-	def _process_data2(self, train_dir):
+	def _process_data2(self, test_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		pid=0
-		inizio=26
-		fine=30
+		inizio=0
+		fine=120
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
-			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
@@ -520,15 +520,15 @@ class Dataset(object):
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
-	def _process_data3(self, train_dir):
+	def _process_data3(self, test_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		pid=0
-		inizio=23
-		fine=100
+		inizio=100
+		fine=2000
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
-			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
