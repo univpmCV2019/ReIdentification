@@ -476,8 +476,8 @@ class Dataset(object):
 	def _process_data1(self, train_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
-		pid=0
-		inizio=0
+		num_pids=0
+		inizio=1
 		fine=150
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
@@ -487,12 +487,12 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				#clip=tuple(clip)
+				num_pids+=1
+				pid = i - inizio
 				tracklets.append((clip,pid,1))
-				pid+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=pid
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
@@ -500,32 +500,7 @@ class Dataset(object):
 	def _process_data2(self, test_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
-		pid=0
-		inizio=1
-		fine=200
-		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.jpg'
-			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
-			#for frame in listafile:
-				#if stringa in frame:
-					#clip.append(frame)
-			if len(clip)!=0:
-				#clip=tuple(clip)
-				limite = int(len(clip) * 0.7)
-				clip2 = clip[limite:]
-				tracklets.append((clip2, pid, 2))
-				pid+=1
-				num_imgs_per_tracklet.append(len(clip2))
-				#del clip[:]
-		num_tracklets= len(tracklets)
-		num_pids=pid
-		print(num_pids)
-		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-		
-	def _process_data3(self, test_dir):
-		tracklets = []
-		num_imgs_per_tracklet = []
-		pid=0
+		num_pids=0
 		inizio=151
 		fine=1500
 		for i in range(inizio,fine):
@@ -536,14 +511,39 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				#clip=tuple(clip)
+				num_pids+=1
+				pid = i - inizio
 				limite = int(len(clip) * 0.7)
-				clip2 = clip[:limite]
-				tracklets.append((clip2, pid, 1))
-				pid+=1
+				clip2 = clip[limite:]
+				tracklets.append((clip2, pid, 2))
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
 		num_tracklets= len(tracklets)
-		num_pids=pid
+		print(num_pids)
+		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+		
+	def _process_data3(self, test_dir):
+		tracklets = []
+		num_imgs_per_tracklet = []
+		num_pids=0
+		inizio=151
+		fine=1500
+		for i in range(inizio,fine):
+			stringa='/Image-'+str(i)+'-*.jpg'
+			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			#for frame in listafile:
+				#if stringa in frame:
+					#clip.append(frame)
+			if len(clip)!=0:
+				#clip=tuple(clip)
+				num_pids+=1
+				pid = i - inizio
+				limite = int(len(clip) * 0.7)
+				clip2 = clip[:limite]
+				tracklets.append((clip2, pid, 1))
+				num_imgs_per_tracklet.append(len(clip2))
+				#del clip[:]
+		num_tracklets= len(tracklets)
 		print(num_pids)
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 		
