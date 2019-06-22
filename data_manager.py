@@ -487,9 +487,9 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				#clip=tuple(clip)
-				num_pids+=1
 				pid = i - inizio
 				tracklets.append((clip,num_pids,1))
+				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
 		num_tracklets= len(tracklets)
@@ -511,11 +511,11 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				#clip=tuple(clip)
-				num_pids+=1
 				pid = i - inizio
 				limite = int(len(clip) * 0.7)
-				clip2 = clip[limite:]
-				tracklets.append((clip2, num_pids, 2))
+				clip2 = clip[:limite]
+				tracklets.append((clip2, num_pids, 1))
+				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
 		num_tracklets= len(tracklets)
@@ -536,11 +536,11 @@ class Dataset(object):
 					#clip.append(frame)
 			if len(clip)!=0:
 				#clip=tuple(clip)
-				num_pids+=1
 				pid = i - inizio
 				limite = int(len(clip) * 0.7)
 				clip2 = clip[:limite]
 				tracklets.append((clip2, num_pids, 1))
+				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
 		num_tracklets= len(tracklets)
