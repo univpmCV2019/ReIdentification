@@ -512,7 +512,7 @@ class Dataset(object):
 			if len(clip)!=0:
 				#clip=tuple(clip)
 				limite = int(len(clip) * 0.7)
-				clip2 = clip[:limite]
+				clip2 = clip[limite:]
 				tracklets.append((clip2, pid, 1))
 				pid+=1
 				num_imgs_per_tracklet.append(len(clip2))
