@@ -560,7 +560,7 @@ class Dataset(object):
 			for i in range(inizio, fine+1):
 				paths = glob.glob(self.root + "/Train100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
-					print("ID={} skipped".format(i))
+					#print("ID={} skipped".format(i))
 					continue
 				num_pids += 1
 				num_tracklets += 1
@@ -577,12 +577,12 @@ class Dataset(object):
 
 		elif tipo == "gallery":
 			camid = 1
-			inizio = 501
-			fine = 1000
+			inizio = 1000
+			fine = 1100
 			for i in range(inizio, fine+1):
 				paths = glob.glob(self.root + "/Test100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
-					print("ID={} skipped".format(i))
+					#print("ID={} skipped".format(i))
 					continue
 				num_pids += 1
 				num_tracklets += 1
@@ -601,12 +601,12 @@ class Dataset(object):
 
 		elif tipo == "query":
 			camid = 2
-			inizio = 501
-			fine = 1000
+			inizio = 1000
+			fine = 1100
 			for i in range(inizio, fine+1):
 				paths = glob.glob(self.root + "/Test100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
-					print("ID={} skipped".format(i))
+					#print("ID={} skipped".format(i))
 					continue
 				num_pids += 1
 				num_tracklets += 1
