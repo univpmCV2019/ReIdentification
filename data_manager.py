@@ -421,27 +421,27 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'Train100')
-	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
-	test_dir = osp.join(root, 'Test100')
-	lista_file_test= glob.glob(test_dir+'/*')
-	random.shuffle(lista_file_test)
-	split_1= int(0.8 * len(lista_file_test))
-	file_query=lista_file_test[split_1:]
-	file_gallery=lista_file_test[:split_1]
-	print(len(file_query))
-	split_2= int(0.8 * len(file_gallery))
-	per_query=file_gallery[split_2:]
-	file_query.append(per_query)
-	print(len(file_query))
+	#train_dir = osp.join(root, 'Train100')
+	#lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
+	#test_dir = osp.join(root, 'Test100')
+	#lista_file_test= glob.glob(test_dir+'/*')
+	#random.shuffle(lista_file_test)
+	#split_1= int(0.8 * len(lista_file_test))
+	#file_query=lista_file_test[split_1:]
+	#file_gallery=lista_file_test[:split_1]
+	#print(len(file_query))
+	#split_2= int(0.8 * len(file_gallery))
+	#per_query=file_gallery[split_2:]
+	#file_query.append(per_query)
+	#print(len(file_query))
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
-			  self._process_data(self.train_dir)
+			  self._process_data("train")
 			query, num_query_tracklets, num_query_pids, num_imgs_query = \
-			  self._process_data2(self.test_dir)
+			  self._process_data("query")
 			gallery, num_gallery_tracklets, num_gallery_pids, num_imgs_gallery = \
-			  self._process_data3(self.test_dir)
+			  self._process_data("gallery")
 			num_imgs_per_tracklet = num_imgs_train + num_imgs_query + num_imgs_gallery
 			min_num = np.min(num_imgs_per_tracklet)
 			max_num = np.max(num_imgs_per_tracklet)
@@ -473,7 +473,7 @@ class Dataset(object):
 			
 			
 			
-	def _process_data(self, train_dir):
+	def _process_data1(self, train_dir):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		pid=0
@@ -541,6 +541,90 @@ class Dataset(object):
 		num_tracklets= len(tracklets)
 		num_pids=pid
 		print(num_pids)
+		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+		
+		
+	def _process_data(self, tipo):
+
+		num_pids = 0
+		num_tracklets = 0
+		tracklets = []
+		num_imgs_per_tracklet = []
+
+
+		print(tipo)
+		if tipo == "train":
+			camid = 1
+			inizio=1
+			fine=500
+			for i in range(inizio, fine+1):
+				paths = glob.glob(self.root + "Train100/" + "Image-{}-*".format(i))
+				if len(paths) == 0:
+					print("ID={} skipped".format(i))
+					continue
+				num_pids += 1
+				num_tracklets += 1
+				img_paths = []
+				for j in range(200):
+					p = self.root + "Train100/" + "Image-{}-{}.jpg".format(i, j)
+					if os.path.exists(p):
+						img_paths.append(p)
+
+				pid = i - inizio
+				tracklets.append((img_paths, pid, camid))
+				num_imgs_per_tracklet.append(len(img_paths))
+				#print("{}) {} images".format(i, len(paths)))
+
+		elif tipo == "gallery":
+			camid = 1
+			inizio = 501
+			fine = 1000
+			for i in range(inizio, fine+1):
+				paths = glob.glob(self.root + "Test100/" + "Image-{}-*".format(i))
+				if len(paths) == 0:
+					print("ID={} skipped".format(i))
+					continue
+				num_pids += 1
+				num_tracklets += 1
+				img_paths = []
+				for j in range(200):
+					p = self.root + "Test100/" + "Image-{}-{}.jpg".format(i, j)
+					if os.path.exists(p):
+						img_paths.append(p)
+
+				pid = i - inizio
+				limite = int(len(img_paths) * 0.7)
+				img_paths2 = img_paths[:limite]
+				tracklets.append((img_paths2, pid, camid))
+				num_imgs_per_tracklet.append(len(img_paths2))
+				#print("{}) {} images".format(i, len(img_paths2)))
+
+		elif tipo == "query":
+			camid = 2
+			inizio = 501
+			fine = 1000
+			for i in range(inizio, fine+1):
+				paths = glob.glob(self.root + "Test100/" + "Image-{}-*".format(i))
+				if len(paths) == 0:
+					print("ID={} skipped".format(i))
+					continue
+				num_pids += 1
+				num_tracklets += 1
+				img_paths = []
+				for j in range(200):
+					p = self.root + "Test100/" + "Image-{}-{}.jpg".format(i, j)
+					if os.path.exists(p):
+						img_paths.append(p)
+
+				pid = i - inizio
+				limite = int(len(img_paths) * 0.7)
+				img_paths2 = img_paths[limite:]
+				tracklets.append((img_paths2, pid, camid))
+				num_imgs_per_tracklet.append(len(img_paths2))
+				#print("{}) {} images".format(i, len(img_paths2)))
+
+		print("\nSTATS: {} traklets - {} pids\n".format(num_tracklets, num_pids))
+
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 				
 """Create dataset"""
