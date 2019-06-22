@@ -421,9 +421,9 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	train_dir = osp.join(root, 'Train100')
+	train_dir = osp.join(root, 'train150-Orig')
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
-	test_dir = osp.join(root, 'Test100')
+	test_dir = osp.join(root, 'test150-Orig')
 	lista_file_test= glob.glob(test_dir+'/*')
 	#random.shuffle(lista_file_test)
 	#split_1= int(0.8 * len(lista_file_test))
@@ -478,7 +478,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		num_pids=0
 		inizio=1
-		fine=150
+		fine=500
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -501,8 +501,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=151
-		fine=1500
+		inizio=501
+		fine=1000
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -526,8 +526,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=151
-		fine=1500
+		inizio=501
+		fine=1000
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
