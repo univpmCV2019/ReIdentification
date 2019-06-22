@@ -558,7 +558,7 @@ class Dataset(object):
 			inizio=1
 			fine=500
 			for i in range(inizio, fine+1):
-				paths = glob.glob(self.root + "Train100/" + "Image-{}-*".format(i))
+				paths = glob.glob(self.root + "/Train100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
 					print("ID={} skipped".format(i))
 					continue
@@ -566,7 +566,7 @@ class Dataset(object):
 				num_tracklets += 1
 				img_paths = []
 				for j in range(200):
-					p = self.root + "Train100/" + "Image-{}-{}.jpg".format(i, j)
+					p = self.root + "/Train100/" + "Image-{}-{}.jpg".format(i, j)
 					if os.path.exists(p):
 						img_paths.append(p)
 
@@ -580,7 +580,7 @@ class Dataset(object):
 			inizio = 501
 			fine = 1000
 			for i in range(inizio, fine+1):
-				paths = glob.glob(self.root + "Test100/" + "Image-{}-*".format(i))
+				paths = glob.glob(self.root + "/Test100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
 					print("ID={} skipped".format(i))
 					continue
@@ -588,7 +588,7 @@ class Dataset(object):
 				num_tracklets += 1
 				img_paths = []
 				for j in range(200):
-					p = self.root + "Test100/" + "Image-{}-{}.jpg".format(i, j)
+					p = self.root + "/Test100/" + "Image-{}-{}.jpg".format(i, j)
 					if os.path.exists(p):
 						img_paths.append(p)
 
@@ -604,7 +604,7 @@ class Dataset(object):
 			inizio = 501
 			fine = 1000
 			for i in range(inizio, fine+1):
-				paths = glob.glob(self.root + "Test100/" + "Image-{}-*".format(i))
+				paths = glob.glob(self.root + "/Test100/" + "Image-{}-*".format(i))
 				if len(paths) == 0:
 					print("ID={} skipped".format(i))
 					continue
@@ -612,7 +612,7 @@ class Dataset(object):
 				num_tracklets += 1
 				img_paths = []
 				for j in range(200):
-					p = self.root + "Test100/" + "Image-{}-{}.jpg".format(i, j)
+					p = self.root + "/Test100/" + "Image-{}-{}.jpg".format(i, j)
 					if os.path.exists(p):
 						img_paths.append(p)
 
