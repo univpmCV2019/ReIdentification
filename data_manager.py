@@ -480,7 +480,7 @@ class Dataset(object):
 		inizio=1
 		fine=100
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.jpg'
+			stringa='Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
@@ -504,7 +504,7 @@ class Dataset(object):
 		inizio=101
 		fine=1500
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.jpg'
+			stringa='Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
@@ -529,7 +529,7 @@ class Dataset(object):
 		inizio=101
 		fine=1500
 		for i in range(inizio,fine):
-			stringa='/Image-'+str(i)+'-*.jpg'
+			stringa='Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
 			#for frame in listafile:
 				#if stringa in frame:
