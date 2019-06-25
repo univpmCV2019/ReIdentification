@@ -477,7 +477,7 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=1
+		inizio=101
 		fine=200
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
@@ -502,7 +502,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		num_pids=0
 		inizio=1
-		fine=20
+		fine=100
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -512,11 +512,11 @@ class Dataset(object):
 			if len(clip)!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
-				#limite = int(len(clip) * 0.7)
-				#clip2 = clip[:limite]
-				tracklets.append((clip, num_pids, 2))
+				limite = int(len(clip) * 0.7)
+				clip2 = clip[:limite]
+				tracklets.append((clip2, num_pids, 2))
 				num_pids+=1
-				num_imgs_per_tracklet.append(len(clip))
+				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
 		num_tracklets= len(tracklets)
 		print(num_pids)
@@ -526,8 +526,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=10
-		fine=200
+		inizio=1
+		fine=100
 		for i in range(inizio,fine):
 			stringa='/Image-'+str(i)+'-*.jpg'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
@@ -537,11 +537,11 @@ class Dataset(object):
 			if len(clip)!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
-				#limite = int(len(clip) * 0.7)
-				#clip2 = clip[:limite]
-				tracklets.append((clip, num_pids, 1))
+				limite = int(len(clip) * 0.7)
+				clip2 = clip[:limite]
+				tracklets.append((clip2, num_pids, 1))
 				num_pids+=1
-				num_imgs_per_tracklet.append(len(clip))
+				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
 		num_tracklets= len(tracklets)
 		print(num_pids)
