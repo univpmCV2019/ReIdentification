@@ -145,11 +145,11 @@ class ResNet50TP(nn.Module):
 
 		'''
 
-	def forward(self, x, z):
+	def forward(self, x):
 		b = x.size(0)
 		t = x.size(1)
-		bd = z.size(0)
-		td = z.size(1)
+		#bd = z.size(0)
+		#td = z.size(1)
 		print(b)
 		print(t)
 		print(bd)
