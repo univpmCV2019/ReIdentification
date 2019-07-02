@@ -544,7 +544,7 @@ class Dataset(object):
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
-			if (len(clip) and len(clip2))!=0:
+			if (len(clip) and len(clip_depth))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
 				limite = int(len(clip) * 0.7)
