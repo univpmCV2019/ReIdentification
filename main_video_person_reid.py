@@ -197,7 +197,6 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 	model.train()
 	losses = AverageMeter()
 	
-	sys.exit("Pausa")
 	for batch_idx, (imgs, imgs_depths, pids, _) in enumerate(trainloader):
 		if use_gpu:
 			imgs, imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
