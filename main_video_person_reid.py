@@ -196,11 +196,13 @@ def main():
 def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu):
 	model.train()
 	losses = AverageMeter()
-
-	for batch_idx, (imgs,imgs_depths, pids, _) in enumerate(trainloader):
+	print(trainloader)
+	print(len(trainloader))
+	sys.exit("Pausa")
+	for batch_idx, (imgs, imgs_depths, pids, _) in enumerate(trainloader):
 		if use_gpu:
-			imgs,imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
-		imgs,imgs_depths, pids = Variable(imgs),Variable(imgs_depths), Variable(pids)
+			imgs, imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
+		imgs, imgs_depths, pids = Variable(imgs),Variable(imgs_depths), Variable(pids)
 		outputs, features = model(imgs,imgs_depths)
 		if args.htri_only:
 			# only use hard triplet loss to train the network
