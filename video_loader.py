@@ -26,6 +26,7 @@ def read_depth(img_depth):
 	while not got_img:
 		try:
 			img = np.load(img_depth,allow_pickle=True)
+			print(img)
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
@@ -164,7 +165,7 @@ class VideoDataset(Dataset):
 					img_path = img_depths_paths[index]
 					img = read_depth(img_path)
 					if self.transform is not None:
-						img = T.Compose([T.ToTensor(),T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
+						
 					img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
