@@ -21,10 +21,12 @@ def read_image(img_path):
 	return img
 
 def read_depth(img_depth):
+	print(img_depth)
 	got_img = False
 	while not got_img:
 		try:
 			img = np.load(img_depth,allow_pickle=True)
+			print(img.item())
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
@@ -52,6 +54,7 @@ class VideoDataset(Dataset):
 		img_paths,img_depths_paths, pid, camid = self.dataset[index]
 		num = len(img_paths)
 		num_d = len(img_depths_paths)
+		print(num_d)
 		if self.sample == 'random':
 			"""
 			Randomly sample seq_len consecutive frames from num frames,
@@ -156,11 +159,11 @@ class VideoDataset(Dataset):
 				#imgs=imgs.permute(1,0,2,3)
 				imgs_list.append(imgs)
 			#Per Depth
-			for indices in indices_list_d:
+			for indices_d in indices_list_d:
 				imgs_d = []
-				for index in indices:
+				for index in indices_d:
 					index=int(index)
-					img_path = img_paths[index]
+					img_path = img_depths_paths[index]
 					img = read_depth(img_path)
 					if self.transform is not None:
 						img = self.transform(img)

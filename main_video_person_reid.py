@@ -117,6 +117,8 @@ def main():
 		batch_size=args.train_batch, num_workers=args.workers,
 		pin_memory=pin_memory, drop_last=True,
 	)
+	
+	
 
 	queryloader = DataLoader(
 		VideoDataset(dataset.query, seq_len=args.seq_len, sample='dense', transform=transform_test),
@@ -124,11 +126,13 @@ def main():
 		pin_memory=pin_memory, drop_last=False,
 	)
 
+
 	galleryloader = DataLoader(
 		VideoDataset(dataset.gallery, seq_len=args.seq_len, sample='dense', transform=transform_test),
 		batch_size=args.test_batch, shuffle=False, num_workers=args.workers,
 		pin_memory=pin_memory, drop_last=False,
 	)
+	
 
 	print("Initializing model: {}".format(args.arch))
 	if args.arch=='resnet503d':
@@ -170,6 +174,7 @@ def main():
 		print("==> Epoch {}/{}".format(epoch+1, args.max_epoch))
 		
 		train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu)
+		print("trainloader ok")
 		
 		if args.stepsize > 0: scheduler.step()
 		
@@ -214,6 +219,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 		loss.backward()
 		optimizer.step()
 		losses.update(loss.data[0], pids.size(0))
+		print("Training rgb ok")
 
 		if (batch_idx+1) % args.print_freq == 0:
 			print("Batch {}/{}\t Loss {:.6f} ({:.6f})".format(batch_idx+1, len(trainloader), losses.val, losses.avg))
