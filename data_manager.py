@@ -493,7 +493,7 @@ class Dataset(object):
 				#clip=tuple(clip)
 				pid = i - inizio
 				tracklets.append((clip,clip_depth,num_pids,1))
-				print(tracklets)
+				#print(tracklets)
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
@@ -553,7 +553,7 @@ class Dataset(object):
 				clip2 = clip[:limite]
 				clip_depth2 = clip_depth[:limite2]
 				tracklets.append((clip2, clip_depth2, num_pids, 1))
-				print(tracklets)
+				#print(tracklets)
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]

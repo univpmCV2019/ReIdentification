@@ -68,7 +68,7 @@ class VideoDataset(Dataset):
                 imgs.append(img)
             imgs = torch.cat(imgs, dim=0)
             #imgs=imgs.permute(1,0,2,3)
-            return imgs, pid, camid
+            return imgs, img_depths_paths pid, camid #per ora passo solo il path, poi si dovrà scrivere codice per caricare effettivamente immagini
 
         elif self.sample == 'dense':
             """
@@ -102,7 +102,7 @@ class VideoDataset(Dataset):
                 #imgs=imgs.permute(1,0,2,3)
                 imgs_list.append(imgs)
             imgs_array = torch.stack(imgs_list)
-            return imgs_array, pid, camid
+            return imgs_array, img_depths_paths, pid, camid #idem come sopra 
 
         else:
             raise KeyError("Unknown sample method: {}. Expected one of {}".format(self.sample, self.sample_methods))
