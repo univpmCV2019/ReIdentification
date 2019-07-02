@@ -24,7 +24,7 @@ def read_depth(img_depth):
 	got_img = False
 	while not got_img:
 		try:
-			img = numpy.load(img_depth)
+			img = np.load(img_depth)
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_path))
