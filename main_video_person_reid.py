@@ -222,7 +222,7 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	model.eval()
 
 	qf, q_pids, q_camids = [], [], []
-	for batch_idx, (imgs, pids, camids) in enumerate(queryloader):
+	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(queryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
 		imgs = Variable(imgs, volatile=True)
@@ -244,7 +244,7 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	print("Extracted features for query set, obtained {}-by-{} matrix".format(qf.size(0), qf.size(1)))
 
 	gf, g_pids, g_camids = [], [], []
-	for batch_idx, (imgs, pids, camids) in enumerate(galleryloader):
+	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(galleryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
 		imgs = Variable(imgs, volatile=True)
