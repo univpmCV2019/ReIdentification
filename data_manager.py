@@ -492,7 +492,7 @@ class Dataset(object):
 			if (len(clip) and len(clip_depth))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
-				tracklets.append((clip,num_pids,1))
+				tracklets.append((clip,clip_depth,num_pids,1))
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
@@ -515,12 +515,14 @@ class Dataset(object):
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
-			if len(clip)!=0:
+			if (len(clip) and len(clip_depth))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
 				limite = int(len(clip) * 0.7)
+				limite2 = int(len(clip_depth) * 0.7)
 				clip2 = clip[limite:]
-				tracklets.append((clip2, num_pids, 2))
+				clip_depth2 = clip_depth[limite2:]
+				tracklets.append((clip2, clip_depth2, num_pids, 2))
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
@@ -542,12 +544,14 @@ class Dataset(object):
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
-			if len(clip)!=0:
+			if (len(clip) and len(clip2))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
 				limite = int(len(clip) * 0.7)
+				limite2 = int(len(clip_depth) * 0.7)
 				clip2 = clip[:limite]
-				tracklets.append((clip2, num_pids, 1))
+				clip_depth2 = clip_depth[:limite2]
+				tracklets.append((clip2, clip_depth2, num_pids, 1))
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
