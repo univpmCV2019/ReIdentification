@@ -26,7 +26,6 @@ def read_depth(img_depth):
 	while not got_img:
 		try:
 			img = np.load(img_depth,allow_pickle=True)
-			print(img)
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
