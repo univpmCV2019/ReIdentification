@@ -174,7 +174,6 @@ def main():
 		print("==> Epoch {}/{}".format(epoch+1, args.max_epoch))
 		
 		train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu)
-		print("trainloader ok")
 		
 		if args.stepsize > 0: scheduler.step()
 		
