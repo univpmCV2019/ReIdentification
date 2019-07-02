@@ -425,6 +425,8 @@ class Dataset(object):
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'test/')
 	lista_file_test= glob.glob(test_dir+'/*')
+	depth_dir_train = osp.join(root,'npy-train/')
+	depth_dir_test = osp.join(root,'npy-test/')
 	#random.shuffle(lista_file_test)
 	#split_1= int(0.8 * len(lista_file_test))
 	#file_query=lista_file_test[split_1:]
@@ -481,11 +483,13 @@ class Dataset(object):
 		fine=500
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
+			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
 			clip=glob.glob(train_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip_depth=glob.glob(self.depth_dir_train+stringa_depth) #raccolgo tutte le relative immagini depth
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
-			if len(clip)!=0:
+			if (len(clip)&&len(clip_depth))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
 				tracklets.append((clip,num_pids,1))
@@ -505,7 +509,9 @@ class Dataset(object):
 		fine=1000 
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
+			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip_depth=glob.glob(self.depth_dir_test+stringa_depth) #raccolgo tutte le relative immagini depth
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
@@ -530,7 +536,9 @@ class Dataset(object):
 		fine=1000 
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
+			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
 			clip=glob.glob(test_dir+stringa) #raccolgo tutti i frame con pid=i
+			clip_depth=glob.glob(self.depth_dir_test+stringa_depth) #raccolgo tutte le relative immagini depth
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
