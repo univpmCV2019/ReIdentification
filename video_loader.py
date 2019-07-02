@@ -6,6 +6,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 import random
+import transforms as T
 
 def read_image(img_path):
 	"""Keep reading image until succeed.
@@ -163,7 +164,7 @@ class VideoDataset(Dataset):
 					img_path = img_depths_paths[index]
 					img = read_depth(img_path)
 					if self.transform is not None:
-						img = self.transform(img)
+						img = T.Compose([T.ToTensor(),T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
 					img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
