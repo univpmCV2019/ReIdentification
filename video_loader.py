@@ -165,7 +165,9 @@ class VideoDataset(Dataset):
 					img_path = img_depths_paths[index]
 					img = read_depth(img_path)
 					if self.transform is not None:
-						print(.)
+						img=img.astype('float32')
+						torch_img=torch.from_numpy(img)
+						torch_norm=T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]))(torch_img)
 					img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
