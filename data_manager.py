@@ -480,7 +480,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		num_pids=0
 		inizio=1
-		fine=500
+		fine=100
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -493,6 +493,7 @@ class Dataset(object):
 				#clip=tuple(clip)
 				pid = i - inizio
 				tracklets.append((clip,clip_depth,num_pids,1))
+				print(tracklets)
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip))
 				#del clip[:]
@@ -505,8 +506,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=501
-		fine=1000 
+		inizio=101
+		fine=200
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -534,8 +535,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=501
-		fine=1000 
+		inizio=101
+		fine=200 
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -552,6 +553,7 @@ class Dataset(object):
 				clip2 = clip[:limite]
 				clip_depth2 = clip_depth[:limite2]
 				tracklets.append((clip2, clip_depth2, num_pids, 1))
+				print(tracklets)
 				num_pids+=1
 				num_imgs_per_tracklet.append(len(clip2))
 				#del clip[:]
