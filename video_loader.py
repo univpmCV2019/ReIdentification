@@ -68,7 +68,7 @@ class VideoDataset(Dataset):
                 imgs.append(img)
             imgs = torch.cat(imgs, dim=0)
             #imgs=imgs.permute(1,0,2,3)
-            return imgs, img_depths_paths pid, camid #per ora passo solo il path, poi si dovra scrivere codice per caricare effettivamente immagini
+            return imgs, img_depths_paths, pid, camid #per ora passo solo il path, poi si dovra scrivere codice per caricare effettivamente immagini
 
         elif self.sample == 'dense':
             """
