@@ -489,7 +489,7 @@ class Dataset(object):
 			#for frame in listafile:
 				#if stringa in frame:
 					#clip.append(frame)
-			if (len(clip)&&len(clip_depth))!=0:
+			if (len(clip) and len(clip_depth))!=0:
 				#clip=tuple(clip)
 				pid = i - inizio
 				tracklets.append((clip,num_pids,1))
