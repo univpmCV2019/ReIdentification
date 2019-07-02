@@ -168,7 +168,7 @@ class VideoDataset(Dataset):
 						torch_img=torch.from_numpy(img)
 						torch_img=T.ToTensor()
 						torch_img=T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-					img = torch_norm.unsqueeze(0)
+					img = torch_img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
 				#imgs=imgs.permute(1,0,2,3)
