@@ -37,7 +37,7 @@ class VideoDataset(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, index):
-        img_paths, pid, camid = self.dataset[index]
+        img_paths,img_depths_paths, pid, camid = self.dataset[index]
         num = len(img_paths)
         if self.sample == 'random':
             """
