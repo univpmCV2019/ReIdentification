@@ -2,6 +2,7 @@ from __future__ import print_function, absolute_import
 import os
 from PIL import Image
 import numpy as np
+from matplotlib import cm 
 
 import torch
 from torch.utils.data import Dataset
@@ -26,6 +27,7 @@ def read_depth(img_depth):
 	while not got_img:
 		try:
 			img = np.load(img_depth,allow_pickle=True)
+			img = Image.fromarray(np.uint8(cm.gist_earth(img)*255))
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
@@ -164,10 +166,7 @@ class VideoDataset(Dataset):
 					img_path = img_depths_paths[index]
 					img = read_depth(img_path)
 					if self.transform is not None:
-						img=img.astype('float32')
-						torch_img=torch.from_numpy(img)
-						torch_img=T.ToTensor()
-						torch_img=T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+						img = self.transform(img)
 					img = torch_img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
