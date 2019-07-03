@@ -231,6 +231,7 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 		if use_gpu:
 			imgs = imgs.cuda()
 		imgs = Variable(imgs, volatile=True)
+		imgs_depths = Variable(imgs_depths, volatile=True)
 		# b=1, n=number of clips, s=16
 		b, n, s, c, h, w = imgs.size()
 		assert(b==1)
