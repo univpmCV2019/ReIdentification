@@ -167,7 +167,7 @@ class VideoDataset(Dataset):
 					img = read_depth(img_path)
 					if self.transform is not None:
 						img = self.transform(img)
-					img = torch_img.unsqueeze(0)
+					img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
 				#imgs=imgs.permute(1,0,2,3)
