@@ -28,7 +28,7 @@ class ResNet50TP(nn.Module):
 		
 		
 		#Rete base RGB 
-		
+		print(x)
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4))
 		x = self.base(x)
 		x = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
@@ -36,9 +36,9 @@ class ResNet50TP(nn.Module):
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
 		f = f.view(b, self.feat_dim)
-		print(f)
 		
 		#Rete Depth 
+		print(z)
 		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
 		z = self.base(z)
 		z = F.avg_pool2d(z, z.size()[2:]) #avg pool non ha return_indices
@@ -46,7 +46,6 @@ class ResNet50TP(nn.Module):
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
 		fd = fd.view(bd, self.feat_dim)
-		print(fd)
 		
 		#Unire 
 		sys.exit("Pausa")
