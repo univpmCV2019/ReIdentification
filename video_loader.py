@@ -102,7 +102,7 @@ class VideoDataset(Dataset):
 				img = read_depth(img_path) #uso funz definita prima
 				if self.transform is not None:
 					img = self.transform(img) #applico sequenza di operazioni con i tensori def in transform che passo a Videoloader
-				img = img.unsqueeze(0)
+				#img = img.unsqueeze(0)
 				imgs_depth.append(img)
 			imgs = torch.cat(imgs, dim=0)
 			imgs_depth = torch.cat(imgs_depth, dim=0)
@@ -167,7 +167,7 @@ class VideoDataset(Dataset):
 					img = read_depth(img_path)
 					if self.transform is not None:
 						img = self.transform(img)
-					img = img.unsqueeze(0)
+					#img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
 				#imgs=imgs.permute(1,0,2,3)
