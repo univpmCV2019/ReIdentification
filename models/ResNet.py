@@ -30,6 +30,8 @@ class ResNet50TP(nn.Module):
 		print(z.size(2))
 		print(z.size(3))
 		print(z.size(4))
+		print(x)
+		print(z)
 		
 		
 		
