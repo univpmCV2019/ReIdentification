@@ -18,6 +18,7 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim, num_classes)
+		self.bilinear=nn.Bilinear(self.feat_dim,self.feat_dim,self.feat_dim)
 		
 
 	def forward(self, x, z):
@@ -56,7 +57,8 @@ class ResNet50TP(nn.Module):
 		fd = fd.view(bd, self.feat_dim)
 		
 		#Unire 
-		sys.exit("Pausa")
+		#sembra aver superato la rete depth...
+		y = self.bilinear(f,fd)
 		
 		if not self.training:
 			return f
