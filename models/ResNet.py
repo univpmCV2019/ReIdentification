@@ -18,7 +18,7 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim, num_classes)
-		self.bilinear=nn.Bilinear(self.feat_dim,self.feat_dim,self.feat_dim)
+		self.bilinear=nn.Bilinear(self.feat_dim, self.feat_dim, self.feat_dim)
 		
 
 	def forward(self, x, z):
@@ -26,14 +26,6 @@ class ResNet50TP(nn.Module):
 		t = x.size(1)
 		bd = z.size(1)
 		td = z.size(2)
-		print(bd)
-		print(td)
-		print(z.size(3))
-		print(z.size(4))
-		print(z.size(5))
-		print(x)
-		print(z)
-		
 		
 		
 		#Rete base RGB 
