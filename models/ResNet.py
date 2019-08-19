@@ -30,7 +30,7 @@ class ResNet50TP(nn.Module):
 		print(z.size(2))
 		print(z.size(3))
 		print(z.size(4))
-		print(z.size(5))
+		
 		
 		
 		#Rete base RGB 
@@ -44,8 +44,8 @@ class ResNet50TP(nn.Module):
 		f = f.view(b, self.feat_dim)
 		
 		#Rete Depth 
-		#1x3x3x4x224x224
-		z = z.view(td*z.size(2),z.size(2), z.size(3), z.size(4))#12,4,4,224 
+		#1x3x12x224x224
+		z = z.view(z.size(2),4, z.size(3), z.size(4))#12,4,4,224 
 		z = self.base(z)
 		z = F.avg_pool2d(z, z.size()[2:]) #avg pool non ha return_indices
 		z = z.view(bd,td,-1)
