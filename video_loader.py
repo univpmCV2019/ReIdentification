@@ -28,6 +28,7 @@ def read_depth(img_depth):
 		try:
 			img = np.load(img_depth,allow_pickle=True)
 			img = Image.fromarray(np.uint8(cm.gist_earth(img)*255))
+			img = img.convert('RGB')
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
