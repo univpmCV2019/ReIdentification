@@ -18,7 +18,7 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim, num_classes)
-		self.bilinear=nn.Bilinear(1024,1024,1024)
+		self.bilinear=nn.Bilinear(2048,2048,2048)
 		
 
 	def forward(self, x, z):
