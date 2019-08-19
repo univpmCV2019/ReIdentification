@@ -1,5 +1,6 @@
 from __future__ import print_function, absolute_import
 import os
+import sys 
 from PIL import Image
 import numpy as np
 from matplotlib import cm 
@@ -29,6 +30,9 @@ def read_depth(img_depth):
 			img = np.load(img_depth,allow_pickle=True)
 			img = Image.fromarray(np.uint8(cm.gist_earth(img)*255))
 			img = img.convert('RGB')
+			print(img.width)
+			print(img.height)
+			sys.exit("pause")
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
@@ -168,7 +172,7 @@ class VideoDataset(Dataset):
 					img = read_depth(img_path)
 					if self.transform is not None:
 						img = self.transform(img)
-					#img = img.unsqueeze(0)
+					img = img.unsqueeze(0)
 					imgs_d.append(img)
 				imgs_d = torch.cat(imgs_d, dim=0)
 				#imgs=imgs.permute(1,0,2,3)
