@@ -23,13 +23,13 @@ class ResNet50TP(nn.Module):
 	def forward(self, x, z):
 		b = x.size(0)
 		t = x.size(1)
-		bd = z.size(0)
-		td = z.size(1)
+		bd = z.size(1)
+		td = z.size(2)
 		print(bd)
 		print(td)
-		print(z.size(2))
 		print(z.size(3))
 		print(z.size(4))
+		print(z.size(5))
 		print(x)
 		print(z)
 		
@@ -46,8 +46,8 @@ class ResNet50TP(nn.Module):
 		f = f.view(b, self.feat_dim)
 		
 		#Rete Depth 
-		#1x3x12x224x224
-		z = z.view(bd*td,3, z.size(3), z.size(4))#3,3,224,224 
+		#1x3x4x3x224x224
+		z = z.view(bd*td,z.size(3), z.size(4), z.size(5))#12,3,224,224 
 		z = self.base(z)
 		z = F.avg_pool2d(z, z.size()[2:]) #avg pool non ha return_indices
 		z = z.view(bd,td,-1)
