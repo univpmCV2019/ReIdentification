@@ -18,7 +18,7 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim, num_classes)
-		self.bilinear=nn.Bilinear(2048,2048,2048)
+		self.bilinear=nn.Bilinear(2048/4,2048/4,2048/4)
 		
 
 	def forward(self, x, z):
@@ -36,7 +36,7 @@ class ResNet50TP(nn.Module):
 		x = x.view(b,t,-1)
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
-		f = f.view(b, self.feat_dim)
+		f = f.view(b, self.feat_dim/4)
 		
 		#Rete Depth 
 		#1x3x4x3x224x224
