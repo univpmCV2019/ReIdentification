@@ -30,9 +30,9 @@ parser.add_argument('-d', '--dataset', type=str, default='dataset',
 					choices=data_manager.get_names())
 parser.add_argument('-j', '--workers', default=4, type=int,
 					help="number of data loading workers (default: 4)")
-parser.add_argument('--height', type=int, default=224,
+parser.add_argument('--height', type=int, default=100,
 					help="height of an image (default: 224)")
-parser.add_argument('--width', type=int, default=224,
+parser.add_argument('--width', type=int, default=100,
 					help="width of an image (default: 112)")
 parser.add_argument('--seq-len', type=int, default=4, help="number of images to sample in a tracklet default 4")
 # Optimization options
