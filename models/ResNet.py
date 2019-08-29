@@ -17,7 +17,7 @@ class ResNet50TP(nn.Module):
 		resnet50 = torchvision.models.resnet50(pretrained=True)
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
-		self.classifier = nn.Linear(self.feat_dim, num_classes)
+		self.classifier = nn.Linear(self.feat_dim/2, num_classes)
 		self.bilinear=nn.Bilinear(2048/2,2048/2,2048/2)
 		
 
@@ -37,6 +37,7 @@ class ResNet50TP(nn.Module):
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
 		f = f.view(b*2, self.feat_dim/2)
+		print(f.size())
 		
 		#Rete Depth 
 		#1x3x4x3x224x224
@@ -47,6 +48,7 @@ class ResNet50TP(nn.Module):
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
 		fd = fd.view(bd*2, self.feat_dim/2) #3x2048
+		print(fd.size())
 		
 		#Unire 
 		#sembra aver superato la rete depth...
