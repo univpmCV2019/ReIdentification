@@ -480,7 +480,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		num_pids=0
 		inizio=1
-		fine=5
+		fine=50
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -506,8 +506,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=5
-		fine=10
+		inizio=45
+		fine=100
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -535,8 +535,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=5
-		fine=10
+		inizio=45
+		fine=100
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
