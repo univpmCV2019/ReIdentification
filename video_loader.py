@@ -17,7 +17,7 @@ def read_image(img_path):
 	while not got_img:
 		try:
 			img = Image.open(img_path).convert('RGB')
-			img = img.thumbnail(100,Image.ANTIALIASIS)
+			img = img.thumbnail(100,Image.ANTIALIAS)
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_path))
@@ -31,7 +31,7 @@ def read_depth(img_depth):
 			img = np.load(img_depth,allow_pickle=True)
 			img = Image.fromarray(np.uint8(cm.gist_earth(img)*255))
 			img = img.convert('RGB')
-			img = img.thumbnail(100,Image.ANTIALIASIS)
+			img = img.thumbnail(100,Image.ANTIALIAS)
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_depth))
