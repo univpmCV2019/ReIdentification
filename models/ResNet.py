@@ -37,7 +37,7 @@ class ResNet50TP(nn.Module):
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
 		f = f.view(b*4, self.feat_dim/4)
-		print(f.size())
+		#print(f.size())
 		
 		#Rete Depth 
 		#1x3x4x3x224x224
@@ -48,7 +48,7 @@ class ResNet50TP(nn.Module):
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
 		fd = fd.view(bd*4, self.feat_dim/4) #3x2048
-		print(fd.size()) #128x512
+		#print(fd.size()) #128x512
 		
 		#Unire 
 		#sembra aver superato la rete depth...
@@ -60,8 +60,11 @@ class ResNet50TP(nn.Module):
 			return f
 		#y = self.classifier(f)
 		y = self.bilinear(f,fd) #128x512 
+		#riaggiustiamo dimensioni
+		f = f.view(32, -1)
+		fd = fd.view(32, -1)
 		y = y.view(32,-1)
-		print(y.size())
+		#print(y.size())
 
 		if self.loss == {'xent'}:
 			return y
