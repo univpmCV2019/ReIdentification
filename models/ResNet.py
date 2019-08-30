@@ -36,7 +36,7 @@ class ResNet50TP(nn.Module):
 		x = x.view(b,t,-1)
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
-		f = f.view(b*2, self.feat_dim/4)
+		f = f.view(b*4, self.feat_dim/4)
 		print(f.size())
 		
 		#Rete Depth 
@@ -47,7 +47,7 @@ class ResNet50TP(nn.Module):
 		z = z.view(bd,td,-1)
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
-		fd = fd.view(bd*2, self.feat_dim/4) #3x2048
+		fd = fd.view(bd*4, self.feat_dim/4) #3x2048
 		print(fd.size()) #64x512
 		
 		#Unire 
