@@ -205,7 +205,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 		if use_gpu:
 			imgs, imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
 		imgs, imgs_depths, pids = Variable(imgs),Variable(imgs_depths), Variable(pids)
-		outputs, features = model(imgs,imgs_depths)
+		outputs, features, features_d = model(imgs,imgs_depths)
 		if args.htri_only:
 			# only use hard triplet loss to train the network
 			loss = criterion_htri(features, pids)
