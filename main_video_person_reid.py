@@ -257,11 +257,16 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(galleryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
+			imgs_depths = imgs_depths.cuda()
 		imgs = Variable(imgs, volatile=True)
+		imgs_depths = Variable(imgs_depths, volatile=True)
 		b, n, s, c, h, w = imgs.size()
+		bd, nd, sd, cd, hd, wd = imgs_depths.size()
 		imgs = imgs.view(b*n, s , c, h, w)
+		imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd, wd)
 		assert(b==1)
-		features = model(imgs)
+		assert(bd==1)
+		features = model(imgs,imgs_depths)
 		features = features.view(n, -1)
 		if pool == 'avg':
 			features = torch.mean(features, 0)
