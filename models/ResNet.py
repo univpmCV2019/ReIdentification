@@ -53,7 +53,7 @@ class ResNet50TP(nn.Module):
 		#Unire 
 		#sembra aver superato la rete depth...
 		y = self.bilinear(f,fd)
-		y = y.view(3,2048/2)
+		y = y.view(32,2048)
 		print(y.size())
 		
 		if not self.training:
