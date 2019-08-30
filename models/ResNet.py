@@ -48,24 +48,25 @@ class ResNet50TP(nn.Module):
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
 		fd = fd.view(bd*4, self.feat_dim/4) #3x2048
-		print(fd.size()) #64x512
+		print(fd.size()) #128x512
 		
 		#Unire 
 		#sembra aver superato la rete depth...
-		y = self.bilinear(f,fd)
-		y = y.view(32,2048)
-		print(y.size())
+		#y = self.bilinear(f,fd)
+		#y = y.view(32,2048)
+		#print(y.size())
 		
 		if not self.training:
 			return f
-		y = self.classifier(f)
+		#y = self.classifier(f)
+		y = self.bilinear(f,fd) #128x512 
 
 		if self.loss == {'xent'}:
 			return y
 		elif self.loss == {'xent', 'htri'}:
-			return y, f
+			return y, f, fd
 		elif self.loss == {'cent'}:
-			return y, f
+			return y, f, fd 
 		else:
 			raise KeyError("Unsupported loss: {}".format(self.loss))
 
