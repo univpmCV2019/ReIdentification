@@ -18,7 +18,7 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim/4, num_classes)
-		self.bilinear=nn.Bilinear(2048/4,2048/4,2048)
+		self.bilinear=nn.Bilinear(2048/4,2048/4,2048/4)
 		
 
 	def forward(self, x, z):
@@ -60,6 +60,8 @@ class ResNet50TP(nn.Module):
 			return f
 		#y = self.classifier(f)
 		y = self.bilinear(f,fd) #128x512 
+		y = y.view(32,-1)
+		print(y.size())
 
 		if self.loss == {'xent'}:
 			return y
