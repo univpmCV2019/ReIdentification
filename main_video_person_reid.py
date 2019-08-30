@@ -218,7 +218,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 		loss.backward()
 		optimizer.step()
 		losses.update(loss.data[0], pids.size(0))
-		print("Training rgb ok")
+		#print("Training rgb ok")
 
 		if (batch_idx+1) % args.print_freq == 0:
 			print("Batch {}/{}\t Loss {:.6f} ({:.6f})".format(batch_idx+1, len(trainloader), losses.val, losses.avg))

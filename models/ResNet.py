@@ -26,7 +26,12 @@ class ResNet50TP(nn.Module):
 		t = x.size(1)
 		bd = z.size(0)
 		td = z.size(1)
-		
+		print(z.size(0))
+		print(z.size(1))
+		print(z.size(2))
+		print(z.size(3))
+		print(z.size(4))
+		print(z.size(5))
 		
 		#Rete base RGB 
 		#3x4x3x224x224
