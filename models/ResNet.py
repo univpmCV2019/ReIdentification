@@ -27,13 +27,10 @@ class ResNet50TP(nn.Module):
 		bd = z.size(0)
 		td = z.size(1)
 		
-		#32x4x3x100x100
 		
 		
 		#Rete base RGB 
-		#3x4x3x224x224
-		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) #12,3,224,224 
-		#print(x.size())
+		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
 		x = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
 		x = x.view(b,t,-1)
@@ -43,32 +40,23 @@ class ResNet50TP(nn.Module):
 		#print(f.size())
 		
 		#Rete Depth 
-		#1x3x4x3x224x224
-		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))#12,3,224,224 
-		#print(z.size())
+		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
 		z = self.base(z)
 		z = F.avg_pool2d(z, z.size()[2:]) #avg pool non ha return_indices
 		z = z.view(bd,td,-1)
 		z = z.permute(0,2,1)
 		fd = F.avg_pool1d(z,td)
-		fd = fd.view(bd*4, self.feat_dim/4) #3x2048
-		#print(fd.size()) #128x512
+		fd = fd.view(bd*4, self.feat_dim/4) 
 		
-		#Unire 
-		#sembra aver superato la rete depth...
-		#y = self.bilinear(f,fd)
-		#y = y.view(32,2048)
-		#print(y.size())
+		
 		
 		if not self.training:
-			return f
-		#y = self.classifier(f)
-		y = self.bilinear(f,fd) #128x512 
+			return f #rivedere questo 
+		y = self.bilinear(f,fd) #Uniamo  
 		#riaggiustiamo dimensioni
 		f = f.view(32, -1)
 		fd = fd.view(32, -1)
 		y = y.view(32,-1)
-		#print(y.size())
 
 		if self.loss == {'xent'}:
 			return y
