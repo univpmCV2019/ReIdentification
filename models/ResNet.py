@@ -50,8 +50,8 @@ class ResNet50TP(nn.Module):
 		
 		
 		
-		if not self.training:
-			return f #rivedere questo 
+		#if not self.training:
+			#return f #rivedere questo 
 		y = self.bilinear(f,fd) #Uniamo  
 		#riaggiustiamo dimensioni
 		f = f.view(6, -1)
