@@ -229,7 +229,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
 	model.eval()
 
-	qf, gf_d, q_pids, q_camids = [], [], []
+	qf, gf_d, q_pids, q_camids = [], [], [], []
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(queryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
