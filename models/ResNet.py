@@ -151,7 +151,7 @@ class ResNet50TA(nn.Module):
 
 class ResNet50RNN(nn.Module):
 	def __init__(self, num_classes, loss={'xent'}, **kwargs):
-		super(ResNet50rnn, self).__init__()
+		super(ResNet50RNN, self).__init__()
 		self.loss = loss
 		resnet50 = torchvision.models.resnet50(pretrained=True)
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
