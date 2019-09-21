@@ -132,7 +132,7 @@ class ResNet50TA(nn.Module):
 		fd = att_z.view(bd,self.feat_dim/4)
 		
 		if not self.training:
-			return f
+			return f, fd 
 		y = self.bilinear(f,fd) #Uniamo  
 		#riaggiustiamo dimensioni
 		f = f.view(6, -1)
@@ -184,7 +184,7 @@ class ResNet50RNN(nn.Module):
 		fd = F.avg_pool1d(outputd, td)
 		fd = fd.view(bd, self.hidden_dim)
 		if not self.training:
-			return f
+			return f, fd 
 			
 		y = self.bilinear(f,fd) #Uniamo  
 		#riaggiustiamo dimensioni
