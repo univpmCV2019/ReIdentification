@@ -229,7 +229,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
 	model.eval()
 
-	qf, q_pids, q_camids = [], [], []
+	qf, gf_d, q_pids, q_camids = [], [], []
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(queryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
@@ -251,16 +251,17 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 		features_d = torch.mean(features_d, 0)
 		features_d = features_d.data.cpu()
 		qf.append(features)
-		qf.append(features_d)
+		qf_d.append(features_d)
 		q_pids.extend(pids)
 		q_camids.extend(camids)
 	qf = torch.stack(qf)
+	qf_d =torch.stack(qf_d)
 	q_pids = np.asarray(q_pids)
 	q_camids = np.asarray(q_camids)
 
 	print("Extracted features for query set, obtained {}-by-{} matrix".format(qf.size(0), qf.size(1)))
 
-	gf, g_pids, g_camids = [], [], []
+	gf, gf_d, g_pids, g_camids = [], [], [], []
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(galleryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
@@ -286,24 +287,30 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 		features = features.data.cpu()
 		features_d = features_d.data.cpu()
 		gf.append(features)
-		gf.append(features_d)
+		gf_d.append(features_d)
 		g_pids.extend(pids)
 		g_camids.extend(camids)
 	gf = torch.stack(gf)
+	gf_d =torch.stack(gf_d)
 	g_pids = np.asarray(g_pids)
 	g_camids = np.asarray(g_camids)
 
 	print("Extracted features for gallery set, obtained {}-by-{} matrix".format(gf.size(0), gf.size(1)))
 	print("Computing distance matrix")
 
-	m, n = qf.size(0), gf.size(0)
+	m, n, md, nd = qf.size(0), gf.size(0), qf_d.size(0), gf_d.size(0)
 	distmat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
 			  torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
 	distmat.addmm_(1, -2, qf, gf.t())
 	distmat = distmat.numpy()
+	distmat_d = torch.pow(qf_d, 2).sum(dim=1, keepdim=True).expand(md, nd) + \
+			  torch.pow(gf_d, 2).sum(dim=1, keepdim=True).expand(nd, md).t()
+	distmat_d.addmm_(1, -2, qf_d, gf_d.t())
+	distmat_d = distmat_d.numpy()
+	distmat_tot = (distmat + distmat_d)/2
 
 	print("Computing CMC and mAP")
-	cmc, mAP = evaluate(distmat, q_pids, g_pids, q_camids, g_camids)
+	cmc, mAP = evaluate(distmat_tot, q_pids, g_pids, q_camids, g_camids)
 
 	print("Results ----------")
 	print("mAP: {:.1%}".format(mAP))
