@@ -18,6 +18,8 @@ def read_image(img_path):
 		try:
 			img = Image.open(img_path).convert('RGB')
 			img = img.resize((100,100),Image.ANTIALIAS)
+			print(img.show())
+			os.system("PAUSE")
 			got_img = True
 		except IOError:
 			print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_path))
