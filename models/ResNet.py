@@ -158,8 +158,8 @@ class ResNet50RNN(nn.Module):
 		self.hidden_dim = 512
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.hidden_dim, num_classes)
-		self.bilinear=nn.Bilinear(2048/4,2048/4,2048/4)
-		self.lstm = nn.LSTM(input_size=self.feat_dim/4, hidden_size=self.hidden_dim, num_layers=1, batch_first=True)
+		self.bilinear=nn.Bilinear(2048,2048,2048)
+		self.lstm = nn.LSTM(input_size=self.feat_dim, hidden_size=self.hidden_dim, num_layers=1, batch_first=True)
 	def forward(self, x, z):
 		b = x.size(0)
 		t = x.size(1)
