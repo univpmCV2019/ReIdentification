@@ -15,7 +15,7 @@ from utils import mkdir_if_missing, write_json, read_json
 
 """Dataset classes"""
 
-
+'''
 class Mars(object):
 	"""
 	MARS
@@ -148,6 +148,7 @@ class Mars(object):
 		num_tracklets = len(tracklets)
 
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
+
 
 class iLIDSVID(object):
 	"""
@@ -413,7 +414,7 @@ class PRID(object):
 		num_pids = len(dirnames)
 
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-
+'''
 class Dataset(object):
 	#deve restituire tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 	#tracklets: lista di clip 
@@ -421,21 +422,17 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
+	#root = 'C:/Users/Sara/Desktop/Università/Magistrale/Computer Vision'
 	train_dir = osp.join(root, 'train/')
+	#train_dir = osp.join(root, 'train150-Orig/')
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'test/')
+	#test_dir = osp.join(root, 'test150-Orig/')
 	lista_file_test= glob.glob(test_dir+'/*')
 	depth_dir_train = osp.join(root,'npy-train/')
+	#depth_dir_train = osp.join(train_dir,'npy-train/')
 	depth_dir_test = osp.join(root,'npy-test/')
-	#random.shuffle(lista_file_test)
-	#split_1= int(0.8 * len(lista_file_test))
-	#file_query=lista_file_test[split_1:]
-	#file_gallery=lista_file_test[:split_1]
-	#print(len(file_query))
-	#split_2= int(0.8 * len(file_gallery))
-	#per_query=file_gallery[split_2:]
-	#file_query.append(per_query)
-	#print(len(file_query))
+	depth_dir_test = osp.join(test_dir,'npy-test/')
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
@@ -480,7 +477,7 @@ class Dataset(object):
 		num_imgs_per_tracklet = []
 		num_pids=0
 		inizio=1
-		fine=300 
+		fine=50 
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -506,8 +503,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=300
-		fine=1000
+		inizio=50
+		fine=100
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -535,8 +532,8 @@ class Dataset(object):
 		tracklets = []
 		num_imgs_per_tracklet = []
 		num_pids=0
-		inizio=300
-		fine=1000
+		inizio=50
+		fine=100
 		for i in range(inizio,fine):
 			stringa='Image-'+str(i)+'-*.jpg'
 			stringa_depth='ImageDepth-'+str(i)+'-*.npy'
@@ -648,9 +645,9 @@ class Dataset(object):
 """Create dataset"""
 
 __factory = {
-	'mars': Mars,
-	'ilidsvid': iLIDSVID,
-	'prid': PRID,
+	#'mars': Mars,
+	#'ilidsvid': iLIDSVID,
+	#'prid': PRID,
 	'dataset': Dataset,
 }
 
