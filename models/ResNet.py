@@ -33,7 +33,7 @@ class ResNet50TP(nn.Module):
 		z3 = z2.view(bd,td,-1)
 		z4 = z3.permute(0,2,1)
 		fd = F.avg_pool1d(z4,td)
-		fd = fd.view(bd*4, self.feat_dim/4) 
+		fd2 = fd.view(bd*4, self.feat_dim/4) 
 		
 		
 		
@@ -42,10 +42,15 @@ class ResNet50TP(nn.Module):
 		x = self.base(x)
 		x1 = torch.add(x,z1)
 		x2 = F.avg_pool2d(x1, x1.size()[2:]) #avg pool non ha return_indices
-		x = x.view(b,t,-1)
-		x = x.permute(0,2,1)
-		f = F.avg_pool1d(x,t)
+		x2 = torch.add(x2,z2)
+		x3 = x2.view(b,t,-1)
+		x3 = torch.add(x3,z3)
+		x4 = x3.permute(0,2,1)
+		x4 = torch.add(x4,z4)
+		f = F.avg_pool1d(x4,t)
+		f = torch.add(f,fd)
 		f = f.view(b*4, self.feat_dim/4)
+		f = torch.add(f,fd2)
 		
 		
 		
