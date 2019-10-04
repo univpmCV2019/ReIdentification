@@ -25,13 +25,13 @@ class ResNet50TP(nn.Module):
 		t = x.size(1)
 		bd = z.size(0)
 		td = z.size(1)
-		print(b:)
+		print('b:')
 		print(b)
-		print(t:)
+		print('t:')
 		print(t)
-		print(bd:)
+		print('bd:')
 		print(bd)
-		print(td:)
+		print('td:')
 		print(td)
 		
 		#Rete Depth 
