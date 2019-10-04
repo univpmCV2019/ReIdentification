@@ -422,17 +422,12 @@ class Dataset(object):
 	#num_pids: numero di persone(?)
 	#num_imgs_per_tracklet: numero di immagini nel tracklet 
 	root = './data'
-	#root = 'C:/Users/Sara/Desktop/Università/Magistrale/Computer Vision'
 	train_dir = osp.join(root, 'train/')
-	#train_dir = osp.join(root, 'train150-Orig/')
 	lista_file_train= glob.glob(train_dir+'/*') #prendo tutti i file
 	test_dir = osp.join(root, 'test/')
-	#test_dir = osp.join(root, 'test150-Orig/')
 	lista_file_test= glob.glob(test_dir+'/*')
 	depth_dir_train = osp.join(root,'npy-train/')
-	#depth_dir_train = osp.join(train_dir,'npy-train/')
 	depth_dir_test = osp.join(root,'npy-test/')
-	depth_dir_test = osp.join(test_dir,'npy-test/')
 	def __init__(self,min_seq_len=0):
 			print("# train identites: {}, # test identites {}".format(len(self.lista_file_train), len(self.lista_file_test)))
 			train, num_train_tracklets, num_train_pids, num_imgs_train = \
