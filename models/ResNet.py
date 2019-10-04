@@ -18,7 +18,6 @@ class ResNet50TP(nn.Module):
 		self.base = nn.Sequential(*list(resnet50.children())[:-2])
 		self.feat_dim = 2048
 		self.classifier = nn.Linear(self.feat_dim/4, num_classes)
-		self.bilinear=nn.Bilinear(2048/4,2048/4,2048/4)
 		
 
 	def forward(self, x, z):
@@ -27,36 +26,37 @@ class ResNet50TP(nn.Module):
 		bd = z.size(0)
 		td = z.size(1)
 		
+		#Rete Depth 
+		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
+		z1 = self.base(z)
+		z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
+		z3 = z2.view(bd,td,-1)
+		z4 = z3.permute(0,2,1)
+		fd = F.avg_pool1d(z4,td)
+		fd = fd.view(bd*4, self.feat_dim/4) 
+		
 		
 		
 		#Rete base RGB 
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
-		x = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
+		x1 = torch.add(x,z1)
+		x2 = F.avg_pool2d(x1, x1.size()[2:]) #avg pool non ha return_indices
 		x = x.view(b,t,-1)
 		x = x.permute(0,2,1)
 		f = F.avg_pool1d(x,t)
 		f = f.view(b*4, self.feat_dim/4)
-		#print(f.size())
 		
-		#Rete Depth 
-		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
-		z = self.base(z)
-		z = F.avg_pool2d(z, z.size()[2:]) #avg pool non ha return_indices
-		z = z.view(bd,td,-1)
-		z = z.permute(0,2,1)
-		fd = F.avg_pool1d(z,td)
-		fd = fd.view(bd*4, self.feat_dim/4) 
 		
 		
 		
 		if not self.training:
 			return f, fd #rivedere questo 
-		y = self.bilinear(f,fd) #Uniamo  
+		y = self.classifier(f)  
 		#riaggiustiamo dimensioni
-		f = f.view(6, -1)
-		fd = fd.view(6, -1)
-		y = y.view(6,-1)
+		#f = f.view(6, -1)
+		#fd = fd.view(6, -1)
+		#y = y.view(6,-1)
 
 		if self.loss == {'xent'}:
 			return y
