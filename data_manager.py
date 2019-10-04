@@ -15,7 +15,7 @@ from utils import mkdir_if_missing, write_json, read_json
 
 """Dataset classes"""
 
-'''
+
 class Mars(object):
 	"""
 	MARS
@@ -414,7 +414,7 @@ class PRID(object):
 		num_pids = len(dirnames)
 
 		return tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
-'''
+
 class Dataset(object):
 	#deve restituire tracklets, num_tracklets, num_pids, num_imgs_per_tracklet
 	#tracklets: lista di clip 
