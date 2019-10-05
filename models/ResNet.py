@@ -45,8 +45,19 @@ class ResNet50TP(nn.Module):
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
 		if not self.training:
-			print(x.size())
-		x = torch.add(x,z1)
+			print('Tensore x prima di add')
+			print(x)
+			if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+				x = torch.add(x,z1)
+				print('Tensore x dopo add')
+				print(x)
+			else:
+				print(x.size())
+				print(z1.size())
+				z1 = view(1,-1)#si rende z1 sommabile
+				x = torch.add(x,z1) #in teoria ora dovrebbe andare
+				print('Tensore x dopo add')
+				print(x)
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
 		#x2 = torch.add(x2,z2)
 		x3 = x2.view(b,t,-1)
