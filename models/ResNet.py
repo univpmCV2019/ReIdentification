@@ -51,7 +51,7 @@ class ResNet50TP(nn.Module):
 		f = F.avg_pool1d(x4,t)
 		#f = torch.add(f,fd)
 		f = f.view(b*4, self.feat_dim/4)
-		f = torch.add(f,1,fd2)
+		f = torch.add(fd2,1,fd)
 		
 		
 		
