@@ -44,15 +44,15 @@ class ResNet50TP(nn.Module):
 		x = self.base(x)
 		if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
 			x = torch.add(x,z1)
-		else:
-			z1 = z1.view(1,-1)#si rende z1 sommabile
-			x = torch.add(x,z1) #in teoria ora dovrebbe andare
+		#else: altrimenti non fare nulla per ora, poi si vede
+			#z1 = z1.view(1,-1)#si rende z1 sommabile
+			#x = torch.add(x,z1) #in teoria ora dovrebbe andare
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
 		if(x2.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
 			x2 = torch.add(x2,z2)
-		else:
-			z2 = z2.view(1,-1)#si rende z1 sommabile
-			x2 = torch.add(x2,z2) #in teoria ora dovrebbe andare
+		#else:
+			#z2 = z2.view(1,-1)
+			#x2 = torch.add(x2,z2) #in teoria ora dovrebbe andare
 		x3 = x2.view(b,t,-1)
 		#x3 = torch.add(x3,z3)
 		x4 = x3.permute(0,2,1)
