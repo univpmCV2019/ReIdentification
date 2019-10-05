@@ -23,6 +23,7 @@ from losses import CrossEntropyLabelSmooth, TripletLoss
 from utils import AverageMeter, Logger, save_checkpoint
 from eval_metrics import evaluate
 from samplers import RandomIdentitySampler
+from samplers import Sampler
 
 parser = argparse.ArgumentParser(description='Train video model with cross entropy loss')
 # Datasets
@@ -113,7 +114,7 @@ def main():
 
 	trainloader = DataLoader(
 		VideoDataset(dataset.train, seq_len=args.seq_len, sample='random',transform=transform_train),
-		sampler=RandomIdentitySampler(dataset.train, num_instances=args.num_instances),
+		sampler=Sampler(dataset.train, num_instances=args.num_instances),
 		batch_size=args.train_batch, num_workers=args.workers,
 		pin_memory=pin_memory, drop_last=True,
 	)
