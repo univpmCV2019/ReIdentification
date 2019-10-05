@@ -29,7 +29,7 @@ def read_depth(img_depth):
 	while not got_img:
 		try:
 			img = np.load(img_depth,allow_pickle=True)
-			img = Image.fromarray(np.uint8(cm.gist_earth(img)*255))
+			img = Image.fromarray(np.uint8(cm.jet(img)*255))
 			img = img.convert('RGB')
 			img = img.resize((100,100),Image.ANTIALIAS)
 			got_img = True
