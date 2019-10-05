@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import os
 import sys
 import torch
 from torch import nn
@@ -30,6 +31,7 @@ class ResNet50TP(nn.Module):
 		#Rete Depth 
 		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
 		if not self.training:
+			print('Depth')
 			print(z.size())
 		z1 = self.base(z)
 		z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
@@ -43,7 +45,9 @@ class ResNet50TP(nn.Module):
 		#Rete base RGB 
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		if not self.training:
+			print('RGB')
 			print(x.size())
+			os.system("PAUSE")
 		x = self.base(x)
 		#x1 = torch.add(x,z1)
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
