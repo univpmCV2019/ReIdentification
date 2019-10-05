@@ -54,7 +54,7 @@ class ResNet50TP(nn.Module):
 			else:
 				print(x.size())
 				print(z1.size())
-				z1 = view(1,-1)#si rende z1 sommabile
+				z1 = z1.view(1,-1)#si rende z1 sommabile
 				x = torch.add(x,z1) #in teoria ora dovrebbe andare
 				print('Tensore x dopo add')
 				print(x)
