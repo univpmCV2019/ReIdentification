@@ -30,9 +30,7 @@ class ResNet50TP(nn.Module):
 		
 		#Rete Depth 
 		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
-		z1 = self.base(z) #24, 2048, 4, 4
-		if not self.training:
-			print(z1.size())
+		z1 = self.base(z) 
 		z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
 		z3 = z2.view(bd,td,-1)
 		z4 = z3.permute(0,2,1)
@@ -44,22 +42,17 @@ class ResNet50TP(nn.Module):
 		#Rete base RGB 
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
-		if not self.training:
-			print('Tensore x prima di add')
-			print(x)
-			if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-				x = torch.add(x,z1)
-				print('Tensore x dopo add')
-				print(x)
-			else:
-				print(x.size())
-				print(z1.size())
-				z1 = z1.view(1,-1)#si rende z1 sommabile
-				x = torch.add(x,z1) #in teoria ora dovrebbe andare
-				print('Tensore x dopo add')
-				print(x)
+		if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x = torch.add(x,z1)
+		else:
+			z1 = z1.view(1,-1)#si rende z1 sommabile
+			x = torch.add(x,z1) #in teoria ora dovrebbe andare
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
-		#x2 = torch.add(x2,z2)
+		if(x2.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x2 = torch.add(x2,z2)
+		else:
+			z2 = z2.view(1,-1)#si rende z1 sommabile
+			x2 = torch.add(x2,z2) #in teoria ora dovrebbe andare
 		x3 = x2.view(b,t,-1)
 		#x3 = torch.add(x3,z3)
 		x4 = x3.permute(0,2,1)
