@@ -30,8 +30,8 @@ class ResNet50TP(nn.Module):
 		
 		#Rete Depth 
 		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
-		z1 = self.base(z)
-		if self.training:
+		z1 = self.base(z) #24, 2048, 4, 4
+		if not self.training:
 			print(z1.size())
 		z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
 		z3 = z2.view(bd,td,-1)
@@ -44,7 +44,7 @@ class ResNet50TP(nn.Module):
 		#Rete base RGB 
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
-		if self.training:
+		if not self.training:
 			print(x.size())
 		x = torch.add(x,z1)
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
