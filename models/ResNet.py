@@ -56,11 +56,13 @@ class ResNet50TP(nn.Module):
 		x3 = x2.view(b,t,-1)
 		#x3 = torch.add(x3,z3)
 		x4 = x3.permute(0,2,1)
-		#x4 = torch.add(x4,z4)
+		if(x4.size(0)==z4.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x2 = torch.add(x4,z4)
 		f = F.avg_pool1d(x4,t)
 		#f = torch.add(f,fd)
 		f = f.view(b*4, self.feat_dim/4)
-		#f = torch.add(fd,1,fd2)
+		if(f.size(0)==fd2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			f = torch.add(f,fd2)
 		
 		
 		
@@ -76,9 +78,9 @@ class ResNet50TP(nn.Module):
 		if self.loss == {'xent'}:
 			return y
 		elif self.loss == {'xent', 'htri'}:
-			return y, f, fd
+			return y, f, fd2
 		elif self.loss == {'cent'}:
-			return y, f, fd 
+			return y, f, fd2 
 		else:
 			raise KeyError("Unsupported loss: {}".format(self.loss))
 
@@ -93,7 +95,6 @@ class ResNet50TA(nn.Module):
 		self.feat_dim = 2048 # feature dimension
 		self.middle_dim = 256 # middle layer dimension
 		self.classifier = nn.Linear(self.feat_dim/4, num_classes)
-		self.bilinear=nn.Bilinear(2048/4,2048/4,2048/4)
 		self.attention_conv = nn.Conv2d(self.feat_dim, self.middle_dim, [7,4]) # 7,4 cooresponds to 224, 112 input image size
 		self.attention_tconv = nn.Conv1d(self.middle_dim, 1, 3, padding=1)
 	def forward(self, x, z):
