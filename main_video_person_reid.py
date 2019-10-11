@@ -209,14 +209,14 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 		if args.htri_only:
 			# only use hard triplet loss to train the network
 			loss = criterion_htri(features, pids)
-			loss_d = criterion_htri(features_d, pids)
+			#loss_d = criterion_htri(features_d, pids)
 		else:
 			# combine hard triplet loss with cross entropy loss
 			xent_loss = criterion_xent(outputs, pids)
 			htri_loss = criterion_htri(features, pids)
-			htri_loss_d = criterion_htri(features_d, pids)
-			htri_loss_media = (htri_loss + htri_loss_d)/2 
-			loss = xent_loss + htri_loss_media 
+			#htri_loss_d = criterion_htri(features_d, pids)
+			#htri_loss_media = (htri_loss + htri_loss_d)/2 
+			loss = xent_loss + htri_loss 
 		optimizer.zero_grad()
 		loss.backward()
 		optimizer.step()
