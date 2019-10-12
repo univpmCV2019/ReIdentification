@@ -71,9 +71,9 @@ class ResNet50TP(nn.Module):
 			return f, fd2 #rivedere questo 
 		y = self.classifier(f)  
 		#riaggiustiamo dimensioni
-		f = f.view(6, -1)
+		f = f.view(16, -1)
 		#fd2 = fd2.view(6, -1)
-		y = y.view(6,-1)
+		y = y.view(16,-1)
 
 		if self.loss == {'xent'}:
 			return y
