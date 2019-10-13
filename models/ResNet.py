@@ -102,24 +102,31 @@ class ResNet50TA(nn.Module):
 		t = x.size(1)
 		bd = z.size(0)
 		td = z.size(1)
+		#Depth
+		z = z.view(bd*td, z.size(2), z.size(3), z.size(4))
+		z1 = self.base(z)
+		ad = F.relu(self.attention_conv(z1))
+		ad = ad.view(bd, td, self.middle_dim)
+		ad1 = ad.permute(0,2,1)
+		ad = F.relu(self.attention_tconv(ad1))
+		ad = ad.view(bd, td)
+		z2 = F.avg_pool2d(z1, z1.size()[2:])
+		
 		#RGB
 		x = x.view(b*t, x.size(2), x.size(3), x.size(4))
 		x = self.base(x)
+		if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x = torch.add(x,z1)
 		a = F.relu(self.attention_conv(x))
 		a = a.view(b, t, self.middle_dim)
 		a = a.permute(0,2,1)
+		if(a.size(0)==ad1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x = torch.add(x,ad1)
 		a = F.relu(self.attention_tconv(a))
 		a = a.view(b, t)
 		x = F.avg_pool2d(x, x.size()[2:])
-		#Depth
-		z = z.view(bd*td, z.size(2), z.size(3), z.size(4))
-		z = self.base(z)
-		ad = F.relu(self.attention_conv(z))
-		ad = ad.view(bd, td, self.middle_dim)
-		ad = ad.permute(0,2,1)
-		ad = F.relu(self.attention_tconv(ad))
-		ad = ad.view(bd, td)
-		z = F.avg_pool2d(z, z.size()[2:])
+		if(x.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			x = torch.add(x,z2)
 		
 		
 		if self. att_gen=='softmax':
@@ -134,7 +141,7 @@ class ResNet50TA(nn.Module):
 			raise KeyError("Unsupported attention generation function: {}".format(self.att_gen))
 		x = x.view(b, t, -1)
 		a = torch.unsqueeze(a, -1)
-		a = a.expand(b, t, self.feat_dim)
+		a = a.expand(b, t, self.feat_dim/4)
 		att_x = torch.mul(x,a)
 		att_x = torch.sum(att_x,1)
 		
@@ -149,7 +156,7 @@ class ResNet50TA(nn.Module):
 		
 		if not self.training:
 			return f, fd 
-		y = self.bilinear(f,fd) #Uniamo  
+		y = self.classifier(f)  
 		#riaggiustiamo dimensioni
 		f = f.view(16, -1)
 		fd = fd.view(16, -1)
