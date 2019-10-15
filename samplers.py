@@ -19,7 +19,7 @@ class RandomIdentitySampler(object):
         self.data_source = data_source
         self.num_instances = num_instances
         self.index_dic = defaultdict(list)
-        for index, (_,_, pid, _) in enumerate(data_source):
+        for index, (_, pid, _) in enumerate(data_source):
             self.index_dic[pid].append(index)
         self.pids = list(self.index_dic.keys())
         self.num_identities = len(self.pids)
