@@ -21,7 +21,7 @@ class ResNet50TP(nn.Module):
 		self.classifier = nn.Linear(self.feat_dim/4, num_classes)
 		
 
-	def forward(self, x, z):
+	def forward(self, x):
 		b = x.size(0)
 		t = x.size(1)
 		#bd = z.size(0)
