@@ -304,7 +304,7 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	distmat.addmm_(1, -2, qf, gf.t())
 	distmat = distmat.numpy()
 	#distmat_d = torch.pow(qf_d, 2).sum(dim=1, keepdim=True).expand(md, nd) + \
-			  torch.pow(gf_d, 2).sum(dim=1, keepdim=True).expand(nd, md).t()
+			  #torch.pow(gf_d, 2).sum(dim=1, keepdim=True).expand(nd, md).t()
 	#distmat_d.addmm_(1, -2, qf_d, gf_d.t())
 	#distmat_d = distmat_d.numpy()
 	#distmat_tot = (distmat + distmat_d)/2
