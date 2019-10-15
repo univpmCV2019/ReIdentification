@@ -201,11 +201,11 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 	model.train()
 	losses = AverageMeter()
 	
-	for batch_idx, (imgs, imgs_depths, pids, _) in enumerate(trainloader):
+	for batch_idx, (imgs, pids, _) in enumerate(trainloader):
 		if use_gpu:
-			imgs, imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
-		imgs, imgs_depths, pids = Variable(imgs),Variable(imgs_depths), Variable(pids)
-		outputs, features = model(imgs,imgs_depths)
+			imgs, pids = imgs.cuda(), pids.cuda()
+		imgs, pids = Variable(imgs), Variable(pids)
+		outputs, features = model(imgs)
 		if args.htri_only:
 			# only use hard triplet loss to train the network
 			loss = criterion_htri(features, pids)
@@ -229,8 +229,8 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20]):
 	model.eval()
 
-	qf, qf_d, q_pids, q_camids = [], [], [], []
-	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(queryloader):
+	qf, q_pids, q_camids = [], [], []
+	for batch_idx, (imgs, pids, camids) in enumerate(queryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
 			#imgs_depths = imgs_depths.cuda()
@@ -261,8 +261,8 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 
 	print("Extracted features for query set, obtained {}-by-{} matrix".format(qf.size(0), qf.size(1)))
 
-	gf, gf_d, g_pids, g_camids = [], [], [], []
-	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(galleryloader):
+	gf, g_pids, g_camids = [], [], []
+	for batch_idx, (imgs, pids, camids) in enumerate(galleryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
 			#imgs_depths = imgs_depths.cuda()

@@ -97,7 +97,7 @@ class ResNet50TA(nn.Module):
 		self.classifier = nn.Linear(self.feat_dim/4, num_classes)
 		self.attention_conv = nn.Conv2d(self.feat_dim, self.middle_dim, [7,4]) # 7,4 cooresponds to 224, 112 input image size
 		self.attention_tconv = nn.Conv1d(self.middle_dim, 1, 3, padding=1)
-	def forward(self, x, z):
+	def forward(self, x):
 		b = x.size(0)
 		t = x.size(1)
 		#bd = z.size(0)
