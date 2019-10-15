@@ -274,7 +274,7 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 		#imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd, wd)
 		assert(b==1)
 		#assert(bd==1)
-		features = model(imgs,imgs_depths)
+		features = model(imgs)
 		features = features.view(n, -1)
 		#features_d = features_d.view(nd, -1)
 		
