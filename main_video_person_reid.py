@@ -205,7 +205,7 @@ def train(model, criterion_xent, criterion_htri, optimizer, trainloader, use_gpu
 		if use_gpu:
 			imgs, imgs_depths, pids = imgs.cuda(),imgs_depths.cuda(), pids.cuda()
 		imgs, imgs_depths, pids = Variable(imgs),Variable(imgs_depths), Variable(pids)
-		outputs, features, features_d = model(imgs,imgs_depths)
+		outputs, features = model(imgs,imgs_depths)
 		if args.htri_only:
 			# only use hard triplet loss to train the network
 			loss = criterion_htri(features, pids)
@@ -233,29 +233,29 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(queryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
-			imgs_depths = imgs_depths.cuda()
+			#imgs_depths = imgs_depths.cuda()
 		imgs = Variable(imgs, volatile=True)
-		imgs_depths = Variable(imgs_depths, volatile=True)
+		#imgs_depths = Variable(imgs_depths, volatile=True)
 		# b=1, n=number of clips, s=16
 		b, n, s, c, h, w = imgs.size()
-		bd, nd, sd, cd, hd, wd = imgs_depths.size()
+		#bd, nd, sd, cd, hd, wd = imgs_depths.size()
 		assert(b==1)
-		assert(bd==1)
+		#assert(bd==1)
 		imgs = imgs.view(b*n, s, c, h, w)
-		imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd,wd)
-		features, features_d = model(imgs,imgs_depths)
+		#imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd,wd)
+		features = model(imgs,imgs_depths)
 		features = features.view(n, -1)
 		features = torch.mean(features, 0)
 		features = features.data.cpu()
-		features_d = features_d.view(nd, -1)
-		features_d = torch.mean(features_d, 0)
-		features_d = features_d.data.cpu()
+		#features_d = features_d.view(nd, -1)
+		#features_d = torch.mean(features_d, 0)
+		#features_d = features_d.data.cpu()
 		qf.append(features)
-		qf_d.append(features_d)
+		#qf_d.append(features_d)
 		q_pids.extend(pids)
 		q_camids.extend(camids)
 	qf = torch.stack(qf)
-	qf_d =torch.stack(qf_d)
+	#qf_d =torch.stack(qf_d)
 	q_pids = np.asarray(q_pids)
 	q_camids = np.asarray(q_camids)
 
@@ -265,52 +265,52 @@ def test(model, queryloader, galleryloader, pool, use_gpu, ranks=[1, 5, 10, 20])
 	for batch_idx, (imgs, imgs_depths, pids, camids) in enumerate(galleryloader):
 		if use_gpu:
 			imgs = imgs.cuda()
-			imgs_depths = imgs_depths.cuda()
+			#imgs_depths = imgs_depths.cuda()
 		imgs = Variable(imgs, volatile=True)
-		imgs_depths = Variable(imgs_depths, volatile=True)
+		#imgs_depths = Variable(imgs_depths, volatile=True)
 		b, n, s, c, h, w = imgs.size()
-		bd, nd, sd, cd, hd, wd = imgs_depths.size()
+		#bd, nd, sd, cd, hd, wd = imgs_depths.size()
 		imgs = imgs.view(b*n, s , c, h, w)
-		imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd, wd)
+		#imgs_depths = imgs_depths.view(bd*nd, sd, cd, hd, wd)
 		assert(b==1)
-		assert(bd==1)
-		features,features_d = model(imgs,imgs_depths)
+		#assert(bd==1)
+		features = model(imgs,imgs_depths)
 		features = features.view(n, -1)
-		features_d = features_d.view(nd, -1)
+		#features_d = features_d.view(nd, -1)
 		
 		if pool == 'avg':
 			features = torch.mean(features, 0)
-			features_d = torch.mean(features_d, 0)
+			#features_d = torch.mean(features_d, 0)
 		else:
 			features, _ = torch.max(features, 0)
-			features_d, _ = torch.max(features_d, 0)
+			#features_d, _ = torch.max(features_d, 0)
 		features = features.data.cpu()
-		features_d = features_d.data.cpu()
+		#features_d = features_d.data.cpu()
 		gf.append(features)
-		gf_d.append(features_d)
+		#gf_d.append(features_d)
 		g_pids.extend(pids)
 		g_camids.extend(camids)
 	gf = torch.stack(gf)
-	gf_d =torch.stack(gf_d)
+	#gf_d =torch.stack(gf_d)
 	g_pids = np.asarray(g_pids)
 	g_camids = np.asarray(g_camids)
 
 	print("Extracted features for gallery set, obtained {}-by-{} matrix".format(gf.size(0), gf.size(1)))
 	print("Computing distance matrix")
 
-	m, n, md, nd = qf.size(0), gf.size(0), qf_d.size(0), gf_d.size(0)
+	m, n = qf.size(0), gf.size(0) #rimettere depth 
 	distmat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
 			  torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
 	distmat.addmm_(1, -2, qf, gf.t())
 	distmat = distmat.numpy()
-	distmat_d = torch.pow(qf_d, 2).sum(dim=1, keepdim=True).expand(md, nd) + \
+	#distmat_d = torch.pow(qf_d, 2).sum(dim=1, keepdim=True).expand(md, nd) + \
 			  torch.pow(gf_d, 2).sum(dim=1, keepdim=True).expand(nd, md).t()
-	distmat_d.addmm_(1, -2, qf_d, gf_d.t())
-	distmat_d = distmat_d.numpy()
-	distmat_tot = (distmat + distmat_d)/2
+	#distmat_d.addmm_(1, -2, qf_d, gf_d.t())
+	#distmat_d = distmat_d.numpy()
+	#distmat_tot = (distmat + distmat_d)/2
 
 	print("Computing CMC and mAP")
-	cmc, mAP = evaluate(distmat_tot, q_pids, g_pids, q_camids, g_camids)
+	cmc, mAP = evaluate(distmat, q_pids, g_pids, q_camids, g_camids) #rimettere distmat_tot
 
 	print("Results ----------")
 	print("mAP: {:.1%}".format(mAP))

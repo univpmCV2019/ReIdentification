@@ -24,51 +24,51 @@ class ResNet50TP(nn.Module):
 	def forward(self, x, z):
 		b = x.size(0)
 		t = x.size(1)
-		bd = z.size(0)
-		td = z.size(1)
+		#bd = z.size(0)
+		#td = z.size(1)
 		
 		
 		#Rete Depth 
-		z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
-		z1 = self.base(z) 
-		z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
-		z3 = z2.view(bd,td,-1)
-		z4 = z3.permute(0,2,1)
-		fd = F.avg_pool1d(z4,td)
-		fd2 = fd.view(bd*4, self.feat_dim/4) 
+		#z = z.view(bd*td,z.size(2), z.size(3), z.size(4))
+		#z1 = self.base(z) 
+		#z2 = F.avg_pool2d(z1, z1.size()[2:]) #avg pool non ha return_indices
+		#z3 = z2.view(bd,td,-1)
+		#z4 = z3.permute(0,2,1)
+		#fd = F.avg_pool1d(z4,td)
+		#fd2 = fd.view(bd*4, self.feat_dim/4) 
 		
 		
 		
 		#Rete base RGB 
 		x = x.view(b*t,x.size(2), x.size(3), x.size(4)) 
 		x = self.base(x)
-		if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x = torch.add(x,z1)
+		#if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x = torch.add(x,z1)
 		#else: altrimenti non fare nulla per ora, poi si vede
 			#z1 = z1.view(1,-1)# si dovrebbe in qualche modo rendere z1 sommabile...
 			#x = torch.add(x,z1) #e poi  dovrebbe andare
 		x2 = F.avg_pool2d(x, x.size()[2:]) #avg pool non ha return_indices
-		if(x2.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x2 = torch.add(x2,z2)
+		#if(x2.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x2 = torch.add(x2,z2)
 		#else:
 			#z2 = z2.view(1,-1)
 			#x2 = torch.add(x2,z2) #in teoria ora dovrebbe andare
 		x3 = x2.view(b,t,-1)
 		#x3 = torch.add(x3,z3)
 		x4 = x3.permute(0,2,1)
-		if(x4.size(0)==z4.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x2 = torch.add(x4,z4)
+		#if(x4.size(0)==z4.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x2 = torch.add(x4,z4)
 		f = F.avg_pool1d(x4,t)
 		#f = torch.add(f,fd)
 		f = f.view(b*4, self.feat_dim/4)
-		if(f.size(0)==fd2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			f = torch.add(f,fd2)
+		#if(f.size(0)==fd2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#f = torch.add(f,fd2)
 		
 		
 		
 		
 		if not self.training:
-			return f, fd2 #rivedere questo 
+			return f #rivedere questo 
 		y = self.classifier(f)  
 		#riaggiustiamo dimensioni
 		f = f.view(16, -1)
@@ -78,9 +78,9 @@ class ResNet50TP(nn.Module):
 		if self.loss == {'xent'}:
 			return y
 		elif self.loss == {'xent', 'htri'}:
-			return y, f, fd2
+			return y, f
 		elif self.loss == {'cent'}:
-			return y, f, fd2 
+			return y, f 
 		else:
 			raise KeyError("Unsupported loss: {}".format(self.loss))
 
@@ -100,43 +100,43 @@ class ResNet50TA(nn.Module):
 	def forward(self, x, z):
 		b = x.size(0)
 		t = x.size(1)
-		bd = z.size(0)
-		td = z.size(1)
+		#bd = z.size(0)
+		#td = z.size(1)
 		#Depth
-		z = z.view(bd*td, z.size(2), z.size(3), z.size(4))
-		z1 = self.base(z)
-		ad = F.relu(self.attention_conv(z1))
-		ad = ad.view(bd, td, self.middle_dim)
-		ad1 = ad.permute(0,2,1)
-		ad = F.relu(self.attention_tconv(ad1))
-		ad = ad.view(bd, td)
-		z2 = F.avg_pool2d(z1, z1.size()[2:])
+		#z = z.view(bd*td, z.size(2), z.size(3), z.size(4))
+		#z1 = self.base(z)
+		#ad = F.relu(self.attention_conv(z1))
+		#ad = ad.view(bd, td, self.middle_dim)
+		#ad1 = ad.permute(0,2,1)
+		#ad = F.relu(self.attention_tconv(ad1))
+		#ad = ad.view(bd, td)
+		#z2 = F.avg_pool2d(z1, z1.size()[2:])
 		
 		#RGB
 		x = x.view(b*t, x.size(2), x.size(3), x.size(4))
 		x = self.base(x)
-		if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x = torch.add(x,z1)
+		#if(x.size(0)==z1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x = torch.add(x,z1)
 		a = F.relu(self.attention_conv(x))
 		a = a.view(b, t, self.middle_dim)
 		a = a.permute(0,2,1)
-		if(a.size(0)==ad1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x = torch.add(x,ad1)
+		#if(a.size(0)==ad1.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x = torch.add(x,ad1)
 		a = F.relu(self.attention_tconv(a))
 		a = a.view(b, t)
 		x = F.avg_pool2d(x, x.size()[2:])
-		if(x.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
-			x = torch.add(x,z2)
+		#if(x.size(0)==z2.size(0)): #per qualche motivo alcune immagini non hanno dim uguali
+			#x = torch.add(x,z2)
 		
 		
 		if self. att_gen=='softmax':
 			a = F.softmax(a, dim=1)
-			ad = F.softmax(ad, dim=1)
+			#ad = F.softmax(ad, dim=1)
 		elif self.att_gen=='sigmoid':
 			a = F.sigmoid(a)
 			a = F.normalize(a, p=1, dim=1)
-			ad = F.sigmoid(ad)
-			ad = F.normalize(ad, p=1, dim=1)
+			#ad = F.sigmoid(ad)
+			#ad = F.normalize(ad, p=1, dim=1)
 		else: 
 			raise KeyError("Unsupported attention generation function: {}".format(self.att_gen))
 		x = x.view(b, t, -1)
@@ -145,29 +145,29 @@ class ResNet50TA(nn.Module):
 		att_x = torch.mul(x,a)
 		att_x = torch.sum(att_x,1)
 		
-		z = z.view(bd, td, -1)
-		ad = torch.unsqueeze(ad, -1)
-		ad = ad.expand(bd, td, self.feat_dim/4)
-		att_z = torch.mul(z,ad)
-		att_z = torch.sum(att_z,1)
+		#z = z.view(bd, td, -1)
+		#ad = torch.unsqueeze(ad, -1)
+		#ad = ad.expand(bd, td, self.feat_dim/4)
+		#att_z = torch.mul(z,ad)
+		#att_z = torch.sum(att_z,1)
 		
 		f = att_x.view(b,self.feat_dim/4)
-		fd = att_z.view(bd,self.feat_dim/4)
+		#fd = att_z.view(bd,self.feat_dim/4)
 		
 		if not self.training:
-			return f, fd 
+			return f
 		y = self.classifier(f)  
 		#riaggiustiamo dimensioni
 		f = f.view(16, -1)
-		fd = fd.view(16, -1)
+		#fd = fd.view(16, -1)
 		y = y.view(16,-1)
 
 		if self.loss == {'xent'}:
 			return y
 		elif self.loss == {'xent', 'htri'}:
-			return y, f, fd
+			return y, f
 		elif self.loss == {'cent'}:
-			return y, f, fd
+			return y, f
 		else:
 			raise KeyError("Unsupported loss: {}".format(self.loss))
 
